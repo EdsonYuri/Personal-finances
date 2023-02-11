@@ -1,0 +1,58 @@
+header{
+  width: 100%;
+  background-color: #181818;
+  display: flex;
+  justify-content: start;
+  align-items: center;
+  gap: 10px;
+  border-bottom: 1px solid white;
+  padding: 3px;
+  color: white;
+}
+#logo{
+  width: 4em;
+}
+img{
+  width: 100%;
+}
+span{
+  font-size: 2em;
+}
+#category{
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  border-right: 1px solid white;
+  height: 3em;
+  padding-right: 10px;
+}
+
+.fields{
+  height: 40px;
+  width: 10em;
+  box-shadow: none;
+  border: none;
+  background-color:  #0e0d0d;
+  border-radius: 25px;
+  /*border-bottom: 2px solid rgb(82, 78, 78);*/
+  transition: 300ms;
+  color: white;
+}
+.fields:focus{
+  transition: 300ms;
+  box-shadow: none;
+  outline: 0;
+}
+.fieldsLarge{
+  width: 20em;
+}
+button{
+  height: 40px;
+  width: 40px;
+}
+
+#form{
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
