@@ -72,6 +72,7 @@ class DataManager {
     this.id = Number(localStorage.getItem('id'))
     this.ExpensesPerMonth = []
     this.RevenuesPerMonth = []
+    this.expenseByCategory = []
   }
   retriveRecord() {
     for (let i = 0; i <= this.id; i++) {
@@ -84,29 +85,7 @@ class DataManager {
     }
   }
 
-  distributeValues() {
-    for (let i in this.recoveredRegister) {
-      switch (this.recoveredRegister[i].category) {
-        case '1':
-          this.expense += Number(this.recoveredRegister[i].value)
-          this.expenseCard.innerHTML = `${new Intl.NumberFormat('PT-BR',
-            {
-              style: 'currency',
-              currency: 'BRL'
-            }).format(this.expense)}`
-          break;
-        case '2':
-          this.revenues += Number(this.recoveredRegister[i].value)
-          this.revenuesCard.innerHTML = `${new Intl.NumberFormat('PT-BR',
-            {
-              style: 'currency',
-              currency: 'BRL'
-            }).format(this.revenues)}`
-          break;
-      }
-    }
 
-  }
   determineBalance() {
     this.balance += this.revenues
     this.balance -= this.expense
@@ -116,28 +95,32 @@ class DataManager {
         currency: 'BRL'
       }).format(this.balance)}`
     if (this.balance < 0) this.balanceCard.style.color = 'red'
+
   }
 
   determineTransactionPerMonths() {
     this.sumExpenses = 0
     for (let i = 1; i <= 12; i++) {
+      let monthTraveled = ''
+      i < 9 ? monthTraveled = `0${i}` : monthTraveled = `${i}`
       this.recoveredRegister.filter(filtered => {
         this.ExpensesPerMonth[0] = this.sum
-        if (filtered.date.slice(5, 7) === `0${i}` && filtered.category === '1') {
+        if (filtered.date.slice(5, 7) === monthTraveled && filtered.category === '1') {
           this.sum = this.sumExpenses += Number(filtered.value)
         }
       })
       this.ExpensesPerMonth.push(this.sum)
-
       this.sumExpenses = 0
       this.sum = 0
     }
     this.ExpensesPerMonth.shift()
     //revenues
     for (let i = 1; i <= 12; i++) {
+      let monthTraveled = ''
+      i < 9 ? monthTraveled = `0${i}` : monthTraveled = `${i}`
       this.recoveredRegister.filter(filtered => {
         this.RevenuesPerMonth[0] = this.sum
-        if (filtered.date.slice(5, 7) === `0${i}` && filtered.category === '2') {
+        if (filtered.date.slice(5, 7) === monthTraveled && filtered.category === '2') {
           this.sum = this.sumExpenses += Number(filtered.value)
         }
       })
@@ -188,8 +171,34 @@ class DataManager {
     localStorage.setItem(`chave${id}`, JSON.stringify(selectedRecord))
     window.location.reload()
   }
-}
+  expenseListByCategory() {
+    this.retriveRecord()
+    let ListExpenseByCategory = [
+      ['Education', 0],
+      ['Food', 0],
+      ['Leisure', 0],
+      ['Service', 0],
+      ['Restaurant', 0],
+      ['Health', 0],
+      ['Transport', 0],
+      ['Home', 0],
+      ['Supermarket', 0],
+      ['other', 0],
+    ]
+    for (let i in ListExpenseByCategory) {
+      this.recoveredRegister.filter(e => {
+        if (e.type == ListExpenseByCategory[i][0] && e.category == '1') {
+          ListExpenseByCategory[i][1] += Number(e.value)
+        }
+      })
+    }
+    for (let i in ListExpenseByCategory) {
+      this.expenseByCategory.push(ListExpenseByCategory[i][1])
+    }
 
+    console.log(this.expenseByCategory)
+  }
+}
 class DeterminesValues extends DataManager {
   constructor() {
     super()
@@ -199,9 +208,64 @@ class DeterminesValues extends DataManager {
   }
   determinesTransactions() {
     this.retriveRecord()
-    this.distributeValues()
+    this.annualTransactions()
     this.determineBalance()
     this.determineTransactionPerMonths()
+  }
+  annualTransactions() {
+    for (let i in this.recoveredRegister) {
+      switch (this.recoveredRegister[i].category) {
+        case '1':
+          this.expense += Number(this.recoveredRegister[i].value)
+          this.expenseCard.innerHTML = `${new Intl.NumberFormat('PT-BR',
+            {
+              style: 'currency',
+              currency: 'BRL'
+            }).format(this.expense)}`
+          break;
+        case '2':
+          this.revenues += Number(this.recoveredRegister[i].value)
+          this.revenuesCard.innerHTML = `${new Intl.NumberFormat('PT-BR',
+            {
+              style: 'currency',
+              currency: 'BRL'
+            }).format(this.revenues)}`
+          break;
+      }
+    }
+  }
+
+  monthlyTransactions() { //rever o código
+    let expense = 0
+    let revenue = 0
+    let monthSelected = Number(document.getElementById('monthTransactions').value.slice(5))
+    let transactionsPerMonth = this.recoveredRegister.filter(e => {
+      if (e.date.slice(5, 7) == monthSelected) {
+        return e
+      }
+    })
+    console.log(transactionsPerMonth)
+    for (let i in transactionsPerMonth) {
+      if (transactionsPerMonth[i].category == '1') {
+        expense += Number(transactionsPerMonth[i].value)
+      } else {
+        revenue += Number(transactionsPerMonth[i].value)
+      }
+    }
+    this.expenseCard.innerHTML = `${new Intl.NumberFormat('PT-BR',
+      {
+        style: 'currency',
+        currency: 'BRL'
+      }).format(expense)
+      }`
+
+    this.revenuesCard.innerHTML = `${new Intl.NumberFormat('PT-BR',
+      {
+        style: 'currency',
+        currency: 'BRL'
+      }).format(revenue)
+      }`
+
   }
 }
 let dataManager = new DataManager()
@@ -238,35 +302,35 @@ class TransactionsTable {
     this.row.insertCell(0).innerHTML = this.category
     this.row.insertCell(1).innerHTML = `${date.day}/${date.month}/${date.year}`
     switch (this.type) {
-      case '1':
+      case 'Education':
         this.type = 'Educação'
         break;
-      case '2':
+      case 'Food':
         this.type = 'Alimentação'
         break;
-      case '3':
+      case 'Leisure':
         this.type = 'Lazer'
         break;
-      case '4':
+      case 'Service':
         this.type = 'Serviço'
         break;
-      case '5':
-        this.type = 'Lazer'
+      case 'Restaurant':
+        this.type = 'Restaurante'
         break;
-      case '6':
+      case 'Health':
         this.type = 'Saúde'
         break;
-      case '7':
+      case 'Transport':
         this.type = 'Transporte'
         break;
-      case '8':
+      case 'Home':
         this.type = 'Casa'
         break;
-      case '9':
+      case 'Supermarket':
         this.type = 'SuperMercado'
         break;
-      case '10':
-        this.type = 'Restaurante'
+      case 'other':
+        this.type = 'Outro'
         break;
     }
     this.row.insertCell(2).innerHTML = this.type
@@ -322,7 +386,7 @@ class TransactionsTable {
     this.row.insertCell(6).appendChild(remove_button)
   }
 }
-function loadTable(listTransactions = dataManager.recoveredRegister) { //mesmo trecho de código sera executado 2 vezes, concerta ;-;
+function loadTable(listTransactions = dataManager.recoveredRegister) {
   dataManager.retriveRecord()
   for (let i in listTransactions) {
     let transactionsTable = new TransactionsTable(
@@ -362,9 +426,14 @@ function filterTransactions() {
     transactionsTable.addCell()
   }
 }
+
+function teste() {
+  determinesValues.monthlyTransactions()
+}
 // Graphics
 
 const tableSwing = document.getElementById('tableSwing')
+const expense = document.getElementById('expenseByCategory')
 
 const monthlyBalanceChart = new Chart(tableSwing, {
   type: 'bar',
@@ -395,6 +464,28 @@ const monthlyBalanceChart = new Chart(tableSwing, {
     },
     layout: {
       //padding: 20,
+    }
+  }
+});
+dataManager.expenseListByCategory()
+
+
+new Chart(expense, {
+  type: 'bar',
+  data: {
+    labels: ['Educação', 'Alimentação', 'Lazer', 'Serviço', 'Restaurante', 'Saúde', 'Transporte', 'Casa', 'Super Mercado', 'Outro'],
+    datasets: [{
+      label: '# of Votes',
+      data: dataManager.expenseByCategory,
+      borderWidth: 1
+    }]
+  },
+  options: {
+    indexAxis: 'y',
+    scales: {
+      y: {
+        beginAtZero: true
+      }
     }
   }
 });

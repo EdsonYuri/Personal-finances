@@ -6,13 +6,13 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Financers</title>
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href='../style.css'>
 </head>
 
-<body>
+<body onload="loadTable()">
   <header>
     <figure id="logo">
-      <img src="./assets/coin.png" alt="">
+      <img src="../assets/coin.png" alt="">
     </figure>
 
     <div id="category">
@@ -38,7 +38,7 @@
           <option value="Health">Saúde</option>
           <option value="Transport">Transporte</option>
           <option value="Home">Casa</option>
-          <option value="Supermarket">Super Mercado</option>
+          <option value="Supermarket">SuperMercado</option>
           <option value="other">Outro</option>
         </select>
 
@@ -51,14 +51,13 @@
 
   <div id="content">
     <nav id="navegation">
-      <a href="./index.html"><img src="./Assets/home.png" alt="" class="icon">Dashboard</a>
-      <a href="./pages/management.html"><img src="./Assets/manage finances.png" alt="" class="icon">Gerenciamento</a>
-      <a href=""><img src="./Assets/planning.png" alt="" class="icon">Planejamento</a>
-      <a href="./pages/reports.html"><img src="./Assets/report.png" alt="" class="icon">Relatórios</a>
+      <a href="../index.html"><img src="../Assets/home.png" alt="" class="icon">Dashboard</a>
+      <a href="../pages/management.html"><img src="../Assets/manage finances.png" alt="" class="icon">Gerenciamento</a>
+      <a href=""><img src="../Assets/planning.png" alt="" class="icon">Planejamento</a>
+      <a href=""><img src="../Assets/report.png" alt="" class="icon">Relatórios</a>
     </nav>
 
     <main>
-      <input type="month" id="monthTransactions" onchange="teste()">
       <div id="values">
         <div class="cards">
           <div>
@@ -67,7 +66,7 @@
           </div>
 
           <figure class="icon_cards">
-            <img src="./Assets/balance.png" alt="" class="icon_cards">
+            <img src="../Assets/balance.png" alt="" class="icon_cards">
           </figure>
         </div>
 
@@ -78,7 +77,7 @@
           </div>
 
           <figure class="icon_cards">
-            <img src="./Assets/expenses.png" alt="" class="icon_cards">
+            <img src="../Assets/expenses.png" alt="" class="icon_cards">
           </figure>
         </div>
 
@@ -89,24 +88,25 @@
           </div>
 
           <figure class="icon_cards">
-            <img src="./Assets/revenues.png" alt="" class="icon_cards">
+            <img src="../Assets/revenues.png" alt="" class="icon_cards">
           </figure>
         </div>
-      </div>
 
+      </div>
       <div id="informations">
         <div>
           <div class='graphics'>
-            <canvas id="tableSwing"></canvas>
+            <canvas id="expenseByCategory"></canvas>
           </div>
         </div>
+
+
       </div>
     </main>
   </div>
 
-
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <script src="./script.js"></script>
+  <script src="../script.js"></script>
 </body>
 
 </html>
