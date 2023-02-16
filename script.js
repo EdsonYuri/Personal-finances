@@ -84,8 +84,6 @@ class DataManager {
 
     }
   }
-
-
   determineBalance() {
     this.balance += this.revenues
     this.balance -= this.expense
@@ -171,8 +169,8 @@ class DataManager {
     localStorage.setItem(`chave${id}`, JSON.stringify(selectedRecord))
     window.location.reload()
   }
-  expenseListByCategory() {
-    this.retriveRecord()
+  expenseListByCategory(records) {
+    //this.retriveRecord()
     let ListExpenseByCategory = [
       ['Education', 0],
       ['Food', 0],
@@ -186,20 +184,25 @@ class DataManager {
       ['other', 0],
     ]
     for (let i in ListExpenseByCategory) {
-      this.recoveredRegister.filter(e => {
+      records.filter(e => {
         if (e.type == ListExpenseByCategory[i][0] && e.category == '1') {
           ListExpenseByCategory[i][1] += Number(e.value)
         }
       })
     }
-    for (let i in ListExpenseByCategory) {
-      this.expenseByCategory.push(ListExpenseByCategory[i][1])
+    if (this.expenseByCategory.length === 0) {
+      for (let i in ListExpenseByCategory) {
+        this.expenseByCategory.push(ListExpenseByCategory[i][1])
+      }
+    } else {
+      this.expenseByCategory = []
+      for (let i in ListExpenseByCategory) {
+        this.expenseByCategory.push(ListExpenseByCategory[i][1])
+      }
     }
-
-    console.log(this.expenseByCategory)
   }
 }
-class DeterminesValues extends DataManager {
+class DistributeValues extends DataManager {
   constructor() {
     super()
     this.expenseCard = document.getElementById('expenseValue')
@@ -236,41 +239,41 @@ class DeterminesValues extends DataManager {
   }
 
   monthlyTransactions() { //rever o código
-    let expense = 0
-    let revenue = 0
+    let monthExpense = 0
+    let monthRevenue = 0
     let monthSelected = Number(document.getElementById('monthTransactions').value.slice(5))
-    let transactionsPerMonth = this.recoveredRegister.filter(e => {
+    this.transactionsPerMonth = this.recoveredRegister.filter(e => {
       if (e.date.slice(5, 7) == monthSelected) {
         return e
       }
     })
-    console.log(transactionsPerMonth)
-    for (let i in transactionsPerMonth) {
-      if (transactionsPerMonth[i].category == '1') {
-        expense += Number(transactionsPerMonth[i].value)
+    console.log(this.transactionsPerMonth)
+    for (let i in this.transactionsPerMonth) {
+      if (this.transactionsPerMonth[i].category == '1') {
+        monthExpense += Number(this.transactionsPerMonth[i].value)
       } else {
-        revenue += Number(transactionsPerMonth[i].value)
+        monthRevenue += Number(this.transactionsPerMonth[i].value)
       }
     }
     this.expenseCard.innerHTML = `${new Intl.NumberFormat('PT-BR',
       {
         style: 'currency',
         currency: 'BRL'
-      }).format(expense)
+      }).format(monthExpense)
       }`
 
     this.revenuesCard.innerHTML = `${new Intl.NumberFormat('PT-BR',
       {
         style: 'currency',
         currency: 'BRL'
-      }).format(revenue)
+      }).format(monthRevenue)
       }`
 
   }
 }
 let dataManager = new DataManager()
-let determinesValues = new DeterminesValues()
-determinesValues.determinesTransactions()
+let distributeValues = new DistributeValues()
+distributeValues.determinesTransactions()
 
 class TransactionsTable {
   constructor(category, date, type, description, value, id) {
@@ -427,13 +430,19 @@ function filterTransactions() {
   }
 }
 
-function teste() {
-  determinesValues.monthlyTransactions()
+function updateChart() {
+  distributeValues.monthlyTransactions()
+  dataManager.expenseListByCategory(distributeValues.transactionsPerMonth)
+  console.log(dataManager.expenseByCategory)
+  expenseByCategory.data.datasets[0].data = dataManager.expenseByCategory
+  expenseByCategory.update()
 }
-// Graphics
 
+// Graphics
 const tableSwing = document.getElementById('tableSwing')
 const expense = document.getElementById('expenseByCategory')
+dataManager.retriveRecord()
+dataManager.expenseListByCategory(dataManager.recoveredRegister)
 
 const monthlyBalanceChart = new Chart(tableSwing, {
   type: 'bar',
@@ -442,13 +451,13 @@ const monthlyBalanceChart = new Chart(tableSwing, {
       'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'],
     datasets: [{
       label: 'Receitas',
-      data: determinesValues.RevenuesPerMonth,
+      data: distributeValues.RevenuesPerMonth,
       borderWidth: 1
     },
 
     {
       label: 'Despesas',
-      data: determinesValues.ExpensesPerMonth,
+      data: distributeValues.ExpensesPerMonth,
       borderWidth: 1
     }
     ]
@@ -467,10 +476,7 @@ const monthlyBalanceChart = new Chart(tableSwing, {
     }
   }
 });
-dataManager.expenseListByCategory()
-
-
-new Chart(expense, {
+let expenseByCategory = new Chart(expense, {
   type: 'bar',
   data: {
     labels: ['Educação', 'Alimentação', 'Lazer', 'Serviço', 'Restaurante', 'Saúde', 'Transporte', 'Casa', 'Super Mercado', 'Outro'],

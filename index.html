@@ -58,7 +58,7 @@
     </nav>
 
     <main>
-      <input type="month" id="monthTransactions" onchange="teste()">
+      <input type="month" id="monthTransactions" onchange="updateChart()">
       <div id="values">
         <div class="cards">
           <div>
@@ -101,6 +101,13 @@
           </div>
         </div>
       </div>
+
+      <div id="informations">
+        <div>
+          <div class='graphics'>
+            <canvas id="expenseByCategory"></canvas>
+          </div>
+        </div>
     </main>
   </div>
 
