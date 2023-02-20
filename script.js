@@ -1,3 +1,4 @@
+
 let infoInput = {}
 class InfoInput {
   constructor(category, type, date, value, description) {
@@ -60,6 +61,9 @@ function determinesSubcategorys() {
   let revenuesType = document.getElementById('RevenuesType')
   this.typeSubcategory
   switch (category.value) {
+    case '':
+      this.typeSubcategory = ''
+      break;
     case '1':
       expenseType.style.display = 'block'
       revenuesType.style.display = 'none'
@@ -382,7 +386,8 @@ class TransactionsTable {
     remove_button.className = 'button_Remove'
     remove_button.id = this.id
     remove_button.onclick = function () {
-      localStorage.removeItem(`chave${remove_button.id} `)
+      window.alert(remove_button.id)
+      localStorage.removeItem(`chave${remove_button.id}`)
       window.location.reload()
     }
     this.row.insertCell(6).appendChild(remove_button)
