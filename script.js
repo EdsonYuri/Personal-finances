@@ -53,10 +53,31 @@ document.querySelector('form button').addEventListener('click', e => {
   instaceInput()
   dataBase.dataRecord()
 })
+
+function determinesSubcategorys() {
+  let category = document.getElementById('typeCategory')
+  let expenseType = document.getElementById('type')
+  let revenuesType = document.getElementById('RevenuesType')
+  this.typeSubcategory
+  switch (category.value) {
+    case '1':
+      expenseType.style.display = 'block'
+      revenuesType.style.display = 'none'
+      this.typeSubcategory = expenseType
+      break;
+    case '2':
+      expenseType.style.display = 'none'
+      revenuesType.style.display = 'block'
+      this.typeSubcategory = revenuesType
+      break;
+  }
+}
 function instaceInput() {
+  determinesSubcategorys.call(this)
+
   infoInput = new InfoInput(
     category = document.getElementById('typeCategory'),
-    type = document.getElementById('type'),
+    type = this.typeSubcategory,
     date = document.getElementById('date'),
     value = document.getElementById('value'),
     description = document.getElementById('description')
@@ -73,16 +94,19 @@ class DataManager {
     this.ExpensesPerMonth = []
     this.RevenuesPerMonth = []
     this.expenseByCategory = []
+    this.revenuesByCategory = []
   }
   retriveRecord() {
-    for (let i = 0; i <= this.id; i++) {
-      if (localStorage.getItem(`chave${i}`) != undefined) {
-        this.recoveredRegister.push(JSON.parse(localStorage.getItem(
-          `chave${i}`
-        )))
+    if (this.recoveredRegister.length === 0) {
+      for (let i = 0; i <= this.id; i++) {
+        if (localStorage.getItem(`chave${i}`) != undefined) {
+          this.recoveredRegister.push(JSON.parse(localStorage.getItem(
+            `chave${i}`
+          )))
+        }
       }
-
     }
+
   }
   determineBalance() {
     this.balance += this.revenues
@@ -91,43 +115,35 @@ class DataManager {
       {
         style: 'currency',
         currency: 'BRL'
-      }).format(this.balance)}`
+      }).format(this.balance)
+      }`
     if (this.balance < 0) this.balanceCard.style.color = 'red'
 
   }
 
   determineTransactionPerMonths() {
-    this.sumExpenses = 0
-    for (let i = 1; i <= 12; i++) {
-      let monthTraveled = ''
-      i < 9 ? monthTraveled = `0${i}` : monthTraveled = `${i}`
-      this.recoveredRegister.filter(filtered => {
-        this.ExpensesPerMonth[0] = this.sum
-        if (filtered.date.slice(5, 7) === monthTraveled && filtered.category === '1') {
-          this.sum = this.sumExpenses += Number(filtered.value)
-        }
-      })
-      this.ExpensesPerMonth.push(this.sum)
-      this.sumExpenses = 0
-      this.sum = 0
-    }
-    this.ExpensesPerMonth.shift()
-    //revenues
-    for (let i = 1; i <= 12; i++) {
-      let monthTraveled = ''
-      i < 9 ? monthTraveled = `0${i}` : monthTraveled = `${i}`
-      this.recoveredRegister.filter(filtered => {
-        this.RevenuesPerMonth[0] = this.sum
-        if (filtered.date.slice(5, 7) === monthTraveled && filtered.category === '2') {
-          this.sum = this.sumExpenses += Number(filtered.value)
-        }
-      })
-      this.RevenuesPerMonth.push(this.sum)
+    let sumExpenses = 0
+    let sum = 0
 
-      this.sumExpenses = 0
-      this.sum = 0
+    function transactionsPerMonth(category, transactions, register) {
+      sumExpenses = 0
+      for (let i = 1; i <= 12; i++) {
+        let monthTraveled = ''
+        i < 9 ? monthTraveled = `0${i}` : monthTraveled = `${i}`
+        register.filter(filtered => {
+          transactions[0] = sum
+          if (filtered.date.slice(5, 7) === monthTraveled && filtered.category === category) {
+            sum = sumExpenses += Number(filtered.value)
+          }
+        })
+        transactions.push(sum)
+        sumExpenses = 0
+        sum = 0
+      }
+      transactions.shift()
     }
-    this.RevenuesPerMonth.shift()
+    transactionsPerMonth('1', this.ExpensesPerMonth, this.recoveredRegister)
+    transactionsPerMonth('2', this.RevenuesPerMonth, this.recoveredRegister)
   }
 
   filterTransactions(transaction) {
@@ -169,38 +185,51 @@ class DataManager {
     localStorage.setItem(`chave${id}`, JSON.stringify(selectedRecord))
     window.location.reload()
   }
+
   expenseListByCategory(records) {
-    //this.retriveRecord()
-    let ListExpenseByCategory = [
-      ['Education', 0],
-      ['Food', 0],
-      ['Leisure', 0],
-      ['Service', 0],
-      ['Restaurant', 0],
-      ['Health', 0],
-      ['Transport', 0],
-      ['Home', 0],
-      ['Supermarket', 0],
-      ['other', 0],
+    let listExpenseByCategory = [
+      ['Educação', 0],
+      ['Alimentação', 0],
+      ['Lazer', 0],
+      ['Serviço', 0],
+      ['Restaurante', 0],
+      ['Saúde', 0],
+      ['Transporte', 0],
+      ['Casa', 0],
+      ['Super Mercado', 0],
+      ['Outro', 0],
     ]
-    for (let i in ListExpenseByCategory) {
-      records.filter(e => {
-        if (e.type == ListExpenseByCategory[i][0] && e.category == '1') {
-          ListExpenseByCategory[i][1] += Number(e.value)
-        }
-      })
-    }
-    if (this.expenseByCategory.length === 0) {
-      for (let i in ListExpenseByCategory) {
-        this.expenseByCategory.push(ListExpenseByCategory[i][1])
+    let listRevenuesByCategory = [
+      ['Salario', 0],
+      ['Juros', 0],
+      ['Dividendos', 0],
+      ['Benefícios', 0],
+      ['Freelancer', 0],
+      ['Venda', 0],
+      ['Bonificação', 0],
+      ['Bônus', 0],
+      ['Ganhos', 0],
+      ['Outro', 0],
+    ]
+
+    function listByCategory(category, values, ListByCategory) {
+      for (let i in ListByCategory) {
+        records.filter(e => {
+          if (e.type == ListByCategory[i][0] && e.category == category) {
+            ListByCategory[i][1] += Number(e.value)
+          }
+        })
       }
-    } else {
-      this.expenseByCategory = []
-      for (let i in ListExpenseByCategory) {
-        this.expenseByCategory.push(ListExpenseByCategory[i][1])
+
+      values.length = 0
+      for (let i in ListByCategory) {
+        values.push(ListByCategory[i][1])
       }
     }
+    listByCategory('1', this.expenseByCategory, listExpenseByCategory)
+    listByCategory('2', this.revenuesByCategory, listRevenuesByCategory)
   }
+
 }
 class DistributeValues extends DataManager {
   constructor() {
@@ -224,7 +253,8 @@ class DistributeValues extends DataManager {
             {
               style: 'currency',
               currency: 'BRL'
-            }).format(this.expense)}`
+            }).format(this.expense)
+            }`
           break;
         case '2':
           this.revenues += Number(this.recoveredRegister[i].value)
@@ -232,13 +262,14 @@ class DistributeValues extends DataManager {
             {
               style: 'currency',
               currency: 'BRL'
-            }).format(this.revenues)}`
+            }).format(this.revenues)
+            }`
           break;
       }
     }
   }
 
-  monthlyTransactions() { //rever o código
+  monthlyTransactions() {
     let monthExpense = 0
     let monthRevenue = 0
     let monthSelected = Number(document.getElementById('monthTransactions').value.slice(5))
@@ -247,7 +278,6 @@ class DistributeValues extends DataManager {
         return e
       }
     })
-    console.log(this.transactionsPerMonth)
     for (let i in this.transactionsPerMonth) {
       if (this.transactionsPerMonth[i].category == '1') {
         monthExpense += Number(this.transactionsPerMonth[i].value)
@@ -304,52 +334,21 @@ class TransactionsTable {
     }
     this.row.insertCell(0).innerHTML = this.category
     this.row.insertCell(1).innerHTML = `${date.day}/${date.month}/${date.year}`
-    switch (this.type) {
-      case 'Education':
-        this.type = 'Educação'
-        break;
-      case 'Food':
-        this.type = 'Alimentação'
-        break;
-      case 'Leisure':
-        this.type = 'Lazer'
-        break;
-      case 'Service':
-        this.type = 'Serviço'
-        break;
-      case 'Restaurant':
-        this.type = 'Restaurante'
-        break;
-      case 'Health':
-        this.type = 'Saúde'
-        break;
-      case 'Transport':
-        this.type = 'Transporte'
-        break;
-      case 'Home':
-        this.type = 'Casa'
-        break;
-      case 'Supermarket':
-        this.type = 'SuperMercado'
-        break;
-      case 'other':
-        this.type = 'Outro'
-        break;
-    }
     this.row.insertCell(2).innerHTML = this.type
     this.row.insertCell(3).innerHTML = this.description
     this.row.insertCell(4).innerHTML = `${new Intl.NumberFormat('PT-BR',
       {
         style: 'currency',
         currency: 'BRL'
-      }).format(this.value)}`
+      }).format(this.value)
+      }`
 
     let edit_register = document.createElement('button')
     edit_register.innerText = 'X'
     edit_register.className = 'edit_register'
     edit_register.id = this.id
     edit_register.onclick = () => {
-      localStorage.setItem(`chave${edit_register.id}`, `{"category":"1","type":"1","date":"2023-01-01","value":"0","description":"Valor do registro alterado","id":${edit_register.id}}`)
+      localStorage.setItem(`chave${edit_register.id}`, `{ "category": "1", "type": "1", "date": "2023-01-01", "value": "0", "description": "Valor do registro alterado", "id": ${edit_register.id}} `)
       window.location.reload()
     }
     edit_register.onclick = () => {
@@ -383,14 +382,13 @@ class TransactionsTable {
     remove_button.className = 'button_Remove'
     remove_button.id = this.id
     remove_button.onclick = function () {
-      localStorage.removeItem(`chave${remove_button.id}`)
+      localStorage.removeItem(`chave${remove_button.id} `)
       window.location.reload()
     }
     this.row.insertCell(6).appendChild(remove_button)
   }
 }
 function loadTable(listTransactions = dataManager.recoveredRegister) {
-  dataManager.retriveRecord()
   for (let i in listTransactions) {
     let transactionsTable = new TransactionsTable(
       listTransactions[i].category,
@@ -410,7 +408,7 @@ function filterTransactions() {
   })
   let searchInputs = new InfoInput(
     category = document.getElementById('searchTypeCategory'),
-    type = document.getElementById('searchType'),
+    type = document.getElementById('searchTypeExpense'),
     date = document.getElementById('searchDate'),
     value = document.getElementById('searchValue'),
     description = document.getElementById('searchDescription')
@@ -433,65 +431,107 @@ function filterTransactions() {
 function updateChart() {
   distributeValues.monthlyTransactions()
   dataManager.expenseListByCategory(distributeValues.transactionsPerMonth)
-  console.log(dataManager.expenseByCategory)
   expenseByCategory.data.datasets[0].data = dataManager.expenseByCategory
+  revenuesByCategory.data.datasets[0].data = dataManager.revenuesByCategory
   expenseByCategory.update()
+  revenuesByCategory.update()
 }
 
 // Graphics
-const tableSwing = document.getElementById('tableSwing')
-const expense = document.getElementById('expenseByCategory')
-dataManager.retriveRecord()
-dataManager.expenseListByCategory(dataManager.recoveredRegister)
-
-const monthlyBalanceChart = new Chart(tableSwing, {
-  type: 'bar',
-  data: {
-    labels: ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho',
-      'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'],
-    datasets: [{
-      label: 'Receitas',
-      data: distributeValues.RevenuesPerMonth,
-      borderWidth: 1
-    },
-
-    {
-      label: 'Despesas',
-      data: distributeValues.ExpensesPerMonth,
-      borderWidth: 1
-    }
-    ]
-  },
-  options: {
-    plugins: {
-      title: {
-        display: true,
-        text: 'Balanço mensal',
-        color: 'white',
-        font: { size: 20 }
+class Graphics extends DistributeValues {
+  constructor() {
+    super()
+    this.tableSwing = document.getElementById('tableSwing')
+    this.expenseGraphic = document.getElementById('expenseByCategory')
+    this.revenuesGraphic = document.getElementById('revenuesByCategory')
+  }
+  generateChart() {
+    dataManager.retriveRecord()
+    dataManager.expenseListByCategory(dataManager.recoveredRegister)
+    this.expenseChart = new Chart(this.expenseGraphic, {
+      type: 'pie',
+      data: {
+        labels: ['Educação', 'Alimentação', 'Lazer', 'Serviço', 'Restaurante', 'Saúde', 'Transporte', 'Casa', 'Super Mercado', 'Outro'],
+        datasets: [{
+          label: '# of Votes',
+          data: dataManager.expenseByCategory,
+          borderWidth: 1
+        }]
       },
-    },
-    layout: {
-      //padding: 20,
-    }
-  }
-});
-let expenseByCategory = new Chart(expense, {
-  type: 'bar',
-  data: {
-    labels: ['Educação', 'Alimentação', 'Lazer', 'Serviço', 'Restaurante', 'Saúde', 'Transporte', 'Casa', 'Super Mercado', 'Outro'],
-    datasets: [{
-      label: '# of Votes',
-      data: dataManager.expenseByCategory,
-      borderWidth: 1
-    }]
-  },
-  options: {
-    indexAxis: 'y',
-    scales: {
-      y: {
-        beginAtZero: true
+      options: {
+        indexAxis: 'y',
+        scales: {
+          y: {
+            beginAtZero: true
+          }
+        }
       }
-    }
+    });
+    this.monthlyBalanceChart = new Chart(this.tableSwing, {
+      type: 'bar',
+      data: {
+        labels: ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho',
+          'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'],
+        datasets: [{
+          label: 'Receitas',
+          data: distributeValues.RevenuesPerMonth,
+          borderWidth: 1
+        },
+
+        {
+          label: 'Despesas',
+          data: distributeValues.ExpensesPerMonth,
+          borderWidth: 1
+        }
+        ]
+      },
+      options: {
+        plugins: {
+          title: {
+            display: true,
+            text: 'Balanço mensal',
+            color: 'white',
+            font: { size: 20 }
+          },
+        },
+        layout: {
+          //padding: 20,
+        }
+      }
+    });
+    this.revenuesChart = new Chart(this.revenuesGraphic, {
+      type: 'pie',
+      data: {
+        labels: ['Salario', 'Juros', 'Dividendos', 'Benefícios', 'Freelancer', 'Venda', 'Bonificação', 'Bônus', 'Ganhos', 'Outro',],
+        datasets: [{
+          label: '# of Votes',
+          data: dataManager.revenuesByCategory,
+          borderWidth: 1
+        }]
+      },
+      options: {
+        indexAxis: 'y',
+        scales: {
+          y: {
+            beginAtZero: true
+          }
+        }
+      }
+    });
   }
-});
+  updateChart() {
+    this.retriveRecord()
+    this.monthlyTransactions()
+    this.expenseListByCategory(this.transactionsPerMonth)
+    this.expenseChart.data.datasets[0].data = this.expenseByCategory
+    this.revenuesChart.data.datasets[0].data = this.revenuesByCategory
+    this.expenseChart.update()
+    this.revenuesChart.update()
+  }
+}
+let graphics = new Graphics()
+graphics.generateChart()
+
+document.getElementById('monthTransactions').onchange = () => {
+  graphics.updateChart()
+}
