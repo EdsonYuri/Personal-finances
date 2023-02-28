@@ -31,14 +31,7 @@ img{
 span{
   font-size: 2em;
 }
-#category{
-  display: flex;
-  gap: 10px;
-  align-items: center;
-  border-right: 1px solid white;
-  height: 3em;
-  padding-right: 10px;
-}
+
 
 .fields{
   height: 40px;
@@ -75,16 +68,25 @@ button{
   width: 25%;
   height: 88.5vh;
   background-color: #181818;
-  padding-top: 30px;
   border-right: 1px solid white;
+  display: flex;
+  justify-content: start;
+  align-items: center;
+  flex-direction: column;
+  flex-wrap: wrap;
 }
 .icon{
   width: 45px;
+}
+.profile{
+  width: 7em;
+  height: 7em;
 }
 a{
   padding: 4px 4px 4px 15px ;
   width: 100%;
   display: flex;
+  height: 3em;
   gap: 10%;
   align-items: center;
   font-weight: 500;
@@ -101,6 +103,25 @@ a:hover{
   border-radius: 30px;
 }
 
+.add{
+  /*background-color: green;*/
+  width: 7em;
+  height: 40%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  
+}
+.add_button{
+  background: linear-gradient(147deg, rgb(156,106,219) 0%, rgb(49,38,228) 100%);
+  width: 100%;
+  border: none;
+  border-radius: 10px;
+}
+.add_button:hover{
+  cursor: pointer;
+}
 /*main*/
 #content{
   display: flex;

@@ -34,7 +34,6 @@ class DataBase {
     }
   }
   dataRecord() {
-
     if (infoInput.dataValidate() != false) {
       alert('dados validados com sucesso')
       this.addIdStorage()
@@ -55,33 +54,59 @@ document.querySelector('form button').addEventListener('click', e => {
   dataBase.dataRecord()
 })
 
-function determinesSubcategorys() {
-  let category = document.getElementById('typeCategory')
-  let expenseType = document.getElementById('type')
-  let revenuesType = document.getElementById('RevenuesType')
-  this.typeSubcategory
+function determinesSubcategorys(Category, Type) {
+  const category = document.getElementById(Category)
+  const type = document.getElementById(Type)
+  const expenseSubcategory = {
+    Educação: 'Educação',
+    Alimentação: 'Alimentação',
+    Lazer: 'Lazer',
+    Serviço: 'Serviço',
+    Restaurante: 'Restaurante',
+    Saúde: 'Saúde',
+    Transporte: 'Transporte',
+    Casa: 'Casa',
+    SuperMercado: 'Super Mercado',
+    Outro: 'Outro'
+  }
+
+  const revenuesSubcategory = {
+    Salario: 'Salario',
+    Juros: 'Juros',
+    Dividendos: 'Dividendos',
+    Benefícios: 'Benefícios',
+    Freelancer: 'Freelancer',
+    Venda: 'Venda',
+    Bonificação: 'Bonificação',
+    Bônus: 'Bônus',
+    Ganhos: 'Ganhos',
+    Outro: 'Outro',
+  }
   switch (category.value) {
-    case '':
-      this.typeSubcategory = ''
-      break;
     case '1':
-      expenseType.style.display = 'block'
-      revenuesType.style.display = 'none'
-      this.typeSubcategory = expenseType
+      type.innerHTML = ''
+      for (let key in expenseSubcategory) {
+        const option = document.createElement('option')
+        option.innerText = key
+        option.value = expenseSubcategory[key]
+        type.appendChild(option)
+      }
       break;
     case '2':
-      expenseType.style.display = 'none'
-      revenuesType.style.display = 'block'
-      this.typeSubcategory = revenuesType
+      type.innerHTML = ''
+      for (let key in revenuesSubcategory) {
+        const option = document.createElement('option')
+        option.innerText = key
+        option.value = revenuesSubcategory[key]
+        type.appendChild(option)
+      }
       break;
   }
 }
 function instaceInput() {
-  determinesSubcategorys.call(this)
-
   infoInput = new InfoInput(
     category = document.getElementById('typeCategory'),
-    type = this.typeSubcategory,
+    type = document.getElementById('type'),
     date = document.getElementById('date'),
     value = document.getElementById('value'),
     description = document.getElementById('description')
@@ -133,7 +158,7 @@ class DataManager {
       sumExpenses = 0
       for (let i = 1; i <= 12; i++) {
         let monthTraveled = ''
-        i < 9 ? monthTraveled = `0${i}` : monthTraveled = `${i}`
+        i <= 9 ? monthTraveled = `0${i}` : monthTraveled = `${i}`
         register.filter(filtered => {
           transactions[0] = sum
           if (filtered.date.slice(5, 7) === monthTraveled && filtered.category === category) {
@@ -241,6 +266,8 @@ class DistributeValues extends DataManager {
     this.expenseCard = document.getElementById('expenseValue')
     this.revenuesCard = document.getElementById('revenuesValue')
     this.balanceCard = document.getElementById('balanceValue')
+    this.transactionsPerDay = []
+    this.daysOfTransaction = []
   }
   determinesTransactions() {
     this.retriveRecord()
@@ -276,12 +303,39 @@ class DistributeValues extends DataManager {
   monthlyTransactions() {
     let monthExpense = 0
     let monthRevenue = 0
+    this.expensePerDay = []
+    this.revenuesPerDay = []
+    this.daysOfTransaction = []
     let monthSelected = Number(document.getElementById('monthTransactions').value.slice(5))
     this.transactionsPerMonth = this.recoveredRegister.filter(e => {
       if (e.date.slice(5, 7) == monthSelected) {
         return e
       }
     })
+    const determineTransactionsPerDay = (categoryPerday, category) => {
+      this.daysOfTransaction = []
+      let dayOftransaction = 0
+      for (let i in this.transactionsPerMonth) {
+        if (this.transactionsPerMonth[i].date.slice(8) > dayOftransaction) {
+          dayOftransaction = this.transactionsPerMonth[i].date.slice(8)
+        }
+      }
+      for (let i = 1; i <= dayOftransaction; i++) {
+        let day = i <= 9 ? `0${i}` : `${i}`
+        let value = 0
+        for (let i in this.transactionsPerMonth) {
+          if (this.transactionsPerMonth[i].date.slice(8) == day && this.transactionsPerMonth[i].category == category) {
+            value += Number(this.transactionsPerMonth[i].value)
+          }
+        }
+        categoryPerday.push(value)
+        value = 0
+        this.daysOfTransaction.push(day)
+      }
+    }
+
+    determineTransactionsPerDay.bind(this)(this.expensePerDay, '1')
+    determineTransactionsPerDay.bind(this)(this.revenuesPerDay, '2')
     for (let i in this.transactionsPerMonth) {
       if (this.transactionsPerMonth[i].category == '1') {
         monthExpense += Number(this.transactionsPerMonth[i].value)
@@ -302,7 +356,6 @@ class DistributeValues extends DataManager {
         currency: 'BRL'
       }).format(monthRevenue)
       }`
-
   }
 }
 let dataManager = new DataManager()
@@ -386,7 +439,6 @@ class TransactionsTable {
     remove_button.className = 'button_Remove'
     remove_button.id = this.id
     remove_button.onclick = function () {
-      window.alert(remove_button.id)
       localStorage.removeItem(`chave${remove_button.id}`)
       window.location.reload()
     }
@@ -413,7 +465,7 @@ function filterTransactions() {
   })
   let searchInputs = new InfoInput(
     category = document.getElementById('searchTypeCategory'),
-    type = document.getElementById('searchTypeExpense'),
+    type = document.getElementById('searchType'),
     date = document.getElementById('searchDate'),
     value = document.getElementById('searchValue'),
     description = document.getElementById('searchDescription')
@@ -433,14 +485,15 @@ function filterTransactions() {
   }
 }
 
-function updateChart() {
+/*function updateChart() {
   distributeValues.monthlyTransactions()
   dataManager.expenseListByCategory(distributeValues.transactionsPerMonth)
+
   expenseByCategory.data.datasets[0].data = dataManager.expenseByCategory
   revenuesByCategory.data.datasets[0].data = dataManager.revenuesByCategory
   expenseByCategory.update()
   revenuesByCategory.update()
-}
+}*/
 
 // Graphics
 class Graphics extends DistributeValues {
@@ -530,8 +583,13 @@ class Graphics extends DistributeValues {
     this.expenseListByCategory(this.transactionsPerMonth)
     this.expenseChart.data.datasets[0].data = this.expenseByCategory
     this.revenuesChart.data.datasets[0].data = this.revenuesByCategory
+    this.monthlyBalanceChart.data.datasets[1].data = this.expensePerDay
+    this.monthlyBalanceChart.data.datasets[0].data = this.revenuesPerDay
+    this.monthlyBalanceChart.data.labels = this.daysOfTransaction
+    console.log(this.revenuesPerDay)
     this.expenseChart.update()
     this.revenuesChart.update()
+    this.monthlyBalanceChart.update()
   }
 }
 let graphics = new Graphics()

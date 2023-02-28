@@ -14,46 +14,18 @@
     <figure id="logo">
       <img src="../assets/coin.png" alt="">
     </figure>
-
-    <div id="category">
-      <span>Adicionar:</span>
-      <select class="fields" id="typeCategory" onchange="determinesSubcategorys()">
-        <option value="">Categoria</option>
-        <option value="1">Despesa</option>
-        <option value="2">Receitas</option>
-      </select>
-    </div>
-
     <div>
       <form action="" id="form">
+        <span>Adicionar:</span>
+        <select class="fields" id="typeCategory" onchange="determinesSubcategorys('typeCategory', 'type')">
+          <option value="" disabled selected>Categoria</option>
+          <option value="1">Despesa</option>
+          <option value="2">Receitas</option>
+        </select>
         <input type="date" class="fields" id="date">
 
         <select name="" id="type" class="fieldsLarge fields">
-          <option value="" disabled selected>Tipo</option>
-          <option value="Educação">Educação</option>
-          <option value="Alimentação">Alimentação</option>
-          <option value="Lazer">Lazer</option>
-          <option value="Serviço">Serviço</option>
-          <option value="Restaurante">Restaurante</option>
-          <option value="Saúde">Saúde</option>
-          <option value="Transporte">Transporte</option>
-          <option value="Casa">Casa</option>
-          <option value="Super Mercado">Super Mercado</option>
-          <option value="Outro">Outro</option>
-        </select>
-
-        <select name="" id="RevenuesType" class="fieldsLarge fields" style="display: none;">
-          <option value="" disabled selected>Tipo</option>
-          <option value="Salario">Salario</option>
-          <option value="Juros">Juros</option>
-          <option value="Dividendos">Dividendos</option>
-          <option value="Benefícios">Benefícios</option>
-          <option value="Freelancer">Freelancer</option>
-          <option value="Venda">Venda</option>
-          <option value="Bonificação">Bonificação</option>
-          <option value="Bônus">Bônus</option>
-          <option value="Ganhos">Ganhos</option>
-          <option value="Outro">Outro</option>
+          <option value="" disabled selected>Selecione uma categoria</option>
         </select>
 
         <input type="number" class="fields" placeholder="Valor" id="value">
@@ -67,7 +39,6 @@
     <nav id="navegation">
       <a href="../index.html"><img src="../Assets/home.png" alt="" class="icon">Dashboard</a>
       <a href="../pages/management.html"><img src="../Assets/manage finances.png" alt="" class="icon">Gerenciamento</a>
-      <a href=""><img src="../Assets/planning.png" alt="" class="icon">Planejamento</a>
     </nav>
 
     <main>
@@ -109,40 +80,16 @@
       <div>
         <form action="" id='search_transactions'>
           <select class="fields" id="searchTypeCategory"
-            onchange="determinesSubcategorys('searchTypeCategory', 'searchTypeExpense', 'searchTypeRevenues') ">
-            <option value="">Categoria</option>
+            onchange="determinesSubcategorys('searchTypeCategory', 'searchType')">
+            <option value="" disabled selected>Categoria</option>
             <option value="1">Despesa</option>
             <option value="2">Receitas</option>
           </select>
-
           <input type="date" class="fields" id="searchDate">
-          <select name="" id="searchTypeExpense" class="fieldsLarge fields">
-            <option value="" disabled selected>Tipo</option>
-            <option value="Educação">Educação</option>
-            <option value="Alimentação">Alimentação</option>
-            <option value="Lazer">Lazer</option>
-            <option value="Serviço">Serviço</option>
-            <option value="Restaurante">Restaurante</option>
-            <option value="Saúde">Saúde</option>
-            <option value="Transporte">Transporte</option>
-            <option value="Casa">Casa</option>
-            <option value="Super Mercado">Super Mercado</option>
-            <option value="Outro">Outro</option>
+          <select name="" id="searchType" class="fieldsLarge fields">
+            <option value="" disabled selected>Selecione uma categoria</option>
           </select>
 
-          <select name="" id="searchTypeRevenues" class="fieldsLarge fields" style="display: none;">
-            <option value="" disabled selected>Tipo</option>
-            <option value="Salario">Salario</option>
-            <option value="Juros">Juros</option>
-            <option value="Dividendos">Dividendos</option>
-            <option value="Benefícios">Benefícios</option>
-            <option value="Freelancer">Freelancer</option>
-            <option value="Venda">Venda</option>
-            <option value="Bonificação">Bonificação</option>
-            <option value="Bônus">Bônus</option>
-            <option value="Ganhos">Ganhos</option>
-            <option value="Outro">Outro</option>
-          </select>
           <input type="number" class="fields" placeholder="Valor" id="searchValue">
           <input type="text" placeholder="Descrição" class="fieldsLarge fields" id="searchDescription">
           <button onclick="filterTransactions()">+</button>
@@ -169,42 +116,17 @@
   <dialog>
     <h1>Editar registro</h1>
     <form action="" id="editForm">
-      <select class="" id="editCategory">
-        <option value="">Categoria</option>
+      <select id="editCategory" onchange="determinesSubcategorys('editCategory', 'editType')">
+        <option value="" disabled selected>Categoria</option>
         <option value="1">Despesa</option>
         <option value="2">Receitas</option>
       </select>
-
-      <input type="date" class="" id="editDate">
-      <select name="" id="editType" class="">
+      <input type="date" id="editDate">
+      <select name="" id="editType">
         <option value="" disabled selected>Tipo</option>
-        <option value="Educação">Educação</option>
-        <option value="Alimentação">Alimentação</option>
-        <option value="Lazer">Lazer</option>
-        <option value="Serviço">Serviço</option>
-        <option value="Restaurante">Restaurante</option>
-        <option value="Saúde">Saúde</option>
-        <option value="Transporte">Transporte</option>
-        <option value="Casa">Casa</option>
-        <option value="Super Mercado">Super Mercado</option>
-        <option value="Outro">Outro</option>
       </select>
-
-      <select name="" id="RevenuesType" class="fieldsLarge fields" style="display: none;">
-        <option value="" disabled selected>Tipo</option>
-        <option value="Salario">Salario</option>
-        <option value="Juros">Juros</option>
-        <option value="Dividendos">Dividendos</option>
-        <option value="Benefícios">Benefícios</option>
-        <option value="Freelancer">Freelancer</option>
-        <option value="Venda">Venda</option>
-        <option value="Bonificação">Bonificação</option>
-        <option value="Bônus">Bônus</option>
-        <option value="Ganhos">Ganhos</option>
-        <option value="Outro">Outro</option>
-      </select>
-      <input type="number" class="" placeholder="Valor" id="editValue">
-      <input type="text" placeholder="Descrição" class="" id="editDescription">
+      <input type="number" placeholder="Valor" id="editValue">
+      <input type="text" placeholder="Descrição" id="editDescription">
       <button id="confirmButton">Confirm</button>
       <button id="cancelButton">Cancel</button>
 
