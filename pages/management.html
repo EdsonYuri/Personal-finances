@@ -10,33 +10,35 @@
 </head>
 
 <body onload="loadTable()">
-  <header>
-    <figure id="logo">
-      <img src="../assets/coin.png" alt="">
-    </figure>
-    <div>
-      <form action="" id="form">
-        <span>Adicionar:</span>
-        <select class="fields" id="typeCategory" onchange="determinesSubcategorys('typeCategory', 'type')">
-          <option value="" disabled selected>Categoria</option>
-          <option value="1">Despesa</option>
-          <option value="2">Receitas</option>
-        </select>
-        <input type="date" class="fields" id="date">
-
-        <select name="" id="type" class="fieldsLarge fields">
-          <option value="" disabled selected>Selecione uma categoria</option>
-        </select>
-
-        <input type="number" class="fields" placeholder="Valor" id="value">
-        <input type="text" placeholder="Descrição" class="fieldsLarge fields" id="description">
-        <button>+</button>
-      </form>
-    </div>
-  </header>
-
   <div id="content">
     <nav id="navegation">
+      <div class="add">
+        <img src="../Assets/profile.png" alt="" class="profile">
+        <button class="add_button" onclick="openModal()">Adicionar</button>
+      </div>
+      <dialog id="add_transaction">
+        <div>
+          <span>Adicionar:</span>
+          <button class="cancelButton">x</button>
+        </div>
+
+        <form action="" id="form"><br>
+          <select id="typeCategory" onchange="determinesSubcategorys('typeCategory', 'type')" class="fields">
+            <option value="" disabled selected>Categoria</option>
+            <option value="1">Despesa</option>
+            <option value="2">Receitas</option>
+          </select>
+          <input type="date" id="date" class="fields">
+
+          <select name="" id="type" class="fields">
+            <option value="" disabled selected>Selecione uma categoria</option>
+          </select>
+
+          <input type="number" placeholder="Valor" id="value" class="fields">
+          <input type="text" placeholder="Descrição" id="description" class="fields">
+          <button class="submit">Adicionar</button>
+        </form>
+      </dialog>
       <a href="../index.html"><img src="../Assets/home.png" alt="" class="icon">Dashboard</a>
       <a href="../pages/management.html"><img src="../Assets/manage finances.png" alt="" class="icon">Gerenciamento</a>
     </nav>
@@ -79,21 +81,21 @@
 
       <div>
         <form action="" id='search_transactions'>
-          <select class="fields" id="searchTypeCategory"
-            onchange="determinesSubcategorys('searchTypeCategory', 'searchType')">
+          <select id="searchTypeCategory" onchange="determinesSubcategorys('searchTypeCategory', 'searchType')"
+            class="search_fields">
             <option value="" disabled selected>Categoria</option>
             <option value="1">Despesa</option>
             <option value="2">Receitas</option>
           </select>
-          <input type="date" class="fields" id="searchDate">
-          <select name="" id="searchType" class="fieldsLarge fields">
+          <input type="date" id="searchDate" class="search_fields">
+          <select name="" id="searchType" class="search_fields">
             <option value="" disabled selected>Selecione uma categoria</option>
           </select>
 
-          <input type="number" class="fields" placeholder="Valor" id="searchValue">
-          <input type="text" placeholder="Descrição" class="fieldsLarge fields" id="searchDescription">
-          <button onclick="filterTransactions()">+</button>
-          <input onClick="window.location.reload()" type="reset">
+          <input type="number" placeholder="Valor" id="searchValue" class="search_fields">
+          <input type="text" placeholder="Descrição" id="searchDescription" class="search_fields">
+          <button onclick="filterTransactions()" id="research">+</button>
+          <input onClick="window.location.reload()" type="reset" id="reset">
         </form>
       </div>
       <div>
@@ -113,23 +115,24 @@
   </div>
 
 
-  <dialog>
-    <h1>Editar registro</h1>
+  <dialog id="editRecord">
+    <div>
+      <span>Editar registro</span>
+      <button id='cancel_button' class="cancelButton">x</button>
+    </div>
     <form action="" id="editForm">
-      <select id="editCategory" onchange="determinesSubcategorys('editCategory', 'editType')">
+      <select id="editCategory" class="fields" onchange="determinesSubcategorys('editCategory', 'editType')">
         <option value="" disabled selected>Categoria</option>
         <option value="1">Despesa</option>
         <option value="2">Receitas</option>
       </select>
-      <input type="date" id="editDate">
-      <select name="" id="editType">
+      <input type="date" id="editDate" class="fields">
+      <select name="" id="editType" class="fields">
         <option value="" disabled selected>Tipo</option>
       </select>
-      <input type="number" placeholder="Valor" id="editValue">
-      <input type="text" placeholder="Descrição" id="editDescription">
-      <button id="confirmButton">Confirm</button>
-      <button id="cancelButton">Cancel</button>
-
+      <input type="number" placeholder="Valor" id="editValue" class="fields">
+      <input type="text" placeholder="Descrição" id="editDescription" class="fields">
+      <button id="confirmButton" class="submit">Confirmar</button>
     </form>
   </dialog>
   <script src="../script.js"></script>

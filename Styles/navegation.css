@@ -1,15 +1,17 @@
-#navegation{
+#navegation {
   width: 25%;
   height: 88.5vh;
   background-color: #181818;
   padding-top: 30px;
   border-right: 1px solid white;
 }
-.icon{
+
+.icon {
   width: 45px;
 }
-a{
-  padding: 4px 4px 4px 15px ;
+
+a {
+  padding: 4px 4px 4px 15px;
   width: 100%;
   display: flex;
   gap: 10%;
@@ -19,9 +21,10 @@ a{
   margin-bottom: 30px;
   text-decoration: none;
   transition: 300ms;
-  color: #11a5ff; 
+  color: #11a5ff;
 }
-a:hover{
+
+a:hover {
   background-color: aqua;
   transition: 300ms;
   border-left: 3px solid transparent;

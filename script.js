@@ -47,8 +47,16 @@ class DataBase {
   }
 }
 let dataBase = new DataBase()
-
-document.querySelector('form button').addEventListener('click', e => {
+function openModal() {
+  let modal = document.getElementById('add_transaction')
+  let cancel = document.querySelector('.cancelButton')
+  modal.showModal()
+  cancel.addEventListener('click', function (e) {
+    e.preventDefault()
+    modal.close()
+  })
+}
+document.querySelector('dialog form button').addEventListener('click', e => {
   e.preventDefault()
   instaceInput()
   dataBase.dataRecord()
@@ -58,6 +66,7 @@ function determinesSubcategorys(Category, Type) {
   const category = document.getElementById(Category)
   const type = document.getElementById(Type)
   const expenseSubcategory = {
+    'Selecione um tipo de despesa': '',
     Educação: 'Educação',
     Alimentação: 'Alimentação',
     Lazer: 'Lazer',
@@ -71,6 +80,7 @@ function determinesSubcategorys(Category, Type) {
   }
 
   const revenuesSubcategory = {
+    '': '',
     Salario: 'Salario',
     Juros: 'Juros',
     Dividendos: 'Dividendos',
@@ -90,6 +100,9 @@ function determinesSubcategorys(Category, Type) {
         option.innerText = key
         option.value = expenseSubcategory[key]
         type.appendChild(option)
+        if (expenseSubcategory[key] == '') {
+          option.setAttribute("disabled", "disabled")
+        }
       }
       break;
     case '2':
@@ -321,6 +334,7 @@ class DistributeValues extends DataManager {
         }
       }
       for (let i = 1; i <= dayOftransaction; i++) {
+        let month = monthSelected <= 9 ? `0${monthSelected}` : `${monthSelected}`
         let day = i <= 9 ? `0${i}` : `${i}`
         let value = 0
         for (let i in this.transactionsPerMonth) {
@@ -330,7 +344,7 @@ class DistributeValues extends DataManager {
         }
         categoryPerday.push(value)
         value = 0
-        this.daysOfTransaction.push(day)
+        this.daysOfTransaction.push(`${day}-${month}`)
       }
     }
 
@@ -401,7 +415,10 @@ class TransactionsTable {
       }`
 
     let edit_register = document.createElement('button')
-    edit_register.innerText = 'X'
+    let icon = document.createElement('img')
+    icon.setAttribute('src', '../Assets/pen.png')
+    edit_register.appendChild(icon)
+    edit_register.setAttribute('img', './Assets/pen.png')
     edit_register.className = 'edit_register'
     edit_register.id = this.id
     edit_register.onclick = () => {
@@ -409,9 +426,9 @@ class TransactionsTable {
       window.location.reload()
     }
     edit_register.onclick = () => {
-      const modal = document.querySelector('dialog')
+      const modal = document.getElementById('editRecord')
       const editForm = document.getElementById('editForm')
-      const cancelButton = document.getElementById('cancelButton')
+      const cancelButton = document.getElementById('cancel_button')
       const confirmButton = document.getElementById('confirmButton')
       modal.showModal()
       editForm.addEventListener('click', e => {
@@ -517,10 +534,24 @@ class Graphics extends DistributeValues {
         }]
       },
       options: {
-        indexAxis: 'y',
-        scales: {
-          y: {
-            beginAtZero: true
+        layout: {
+          padding: 0,
+        },
+        resposive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          title: {
+            display: true,
+            text: 'Despesas',
+            color: 'white',
+            font: { size: 20 }
+          },
+          legend: {
+            position: 'right',
+            labels: {
+              boxWidth: 10,
+              color: '#9b9b9b',
+            }
           }
         }
       }
@@ -528,39 +559,55 @@ class Graphics extends DistributeValues {
     this.monthlyBalanceChart = new Chart(this.tableSwing, {
       type: 'bar',
       data: {
-        labels: ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho',
-          'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'],
+        labels: ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'],
         datasets: [{
           label: 'Receitas',
           data: distributeValues.RevenuesPerMonth,
-          borderWidth: 1
+          borderWidth: 1,
         },
-
         {
           label: 'Despesas',
           data: distributeValues.ExpensesPerMonth,
           borderWidth: 1
-        }
-        ]
+        }]
       },
       options: {
+        scales: {
+          x: {
+            ticks: {
+              color: '#9b9b9b'
+            }
+          },
+          y: {
+            ticks: {
+              color: '#9b9b9b'
+            }
+          }
+        },
+        layout: {
+          padding: 0
+        },
+        responsive: true,
+        maintainAspectRatio: false,
         plugins: {
+          legend: {
+            labels: {
+              color: '#9b9b9b'
+            }
+          },
           title: {
             display: true,
             text: 'Balanço mensal',
             color: 'white',
             font: { size: 20 }
-          },
-        },
-        layout: {
-          //padding: 20,
+          }
         }
       }
     });
     this.revenuesChart = new Chart(this.revenuesGraphic, {
       type: 'pie',
       data: {
-        labels: ['Salario', 'Juros', 'Dividendos', 'Benefícios', 'Freelancer', 'Venda', 'Bonificação', 'Bônus', 'Ganhos', 'Outro',],
+        labels: ['Salario', 'Juros', 'Dividendos', 'Benefícios', 'Freelancer', 'Venda', 'Bonificação', 'Bônus', 'Ganhos', 'Outro'],
         datasets: [{
           label: '# of Votes',
           data: dataManager.revenuesByCategory,
@@ -568,10 +615,24 @@ class Graphics extends DistributeValues {
         }]
       },
       options: {
-        indexAxis: 'y',
-        scales: {
-          y: {
-            beginAtZero: true
+        layout: {
+          padding: 0
+        },
+        resposive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          title: {
+            display: true,
+            text: 'Receitas',
+            color: 'white',
+            font: { size: 20 }
+          },
+          legend: {
+            position: 'right',
+            labels: {
+              color: '#9b9b9b',
+              boxWidth: 10
+            }
           }
         }
       }
@@ -586,7 +647,6 @@ class Graphics extends DistributeValues {
     this.monthlyBalanceChart.data.datasets[1].data = this.expensePerDay
     this.monthlyBalanceChart.data.datasets[0].data = this.revenuesPerDay
     this.monthlyBalanceChart.data.labels = this.daysOfTransaction
-    console.log(this.revenuesPerDay)
     this.expenseChart.update()
     this.revenuesChart.update()
     this.monthlyBalanceChart.update()

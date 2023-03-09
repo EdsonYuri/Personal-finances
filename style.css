@@ -1,17 +1,26 @@
 /*universal*/
-*{
-  padding: 0; 
+* {
+  padding: 0;
   margin: 0;
   box-sizing: border-box;
   font-family: "trebuchet MS", Helvetica, sans-serif;
+  appearance: none;
+  outline: none;
+  border: none;
 }
-body{
-  /*background-image: linear-gradient(to top, #ff0000 0%, #120388 100%);*/
-  background-color: #242425;
+
+button:hover,
+#reset {
+  cursor: pointer;
+}
+
+body {
+  background: rgb(51, 69, 90);
+  background: linear-gradient(160deg, rgba(51, 69, 90, 1) 0%, rgb(6, 11, 19) 100%);
 }
 
 /*header*/
-header{
+header {
   width: 100%;
   background-color: #181818;
   display: flex;
@@ -20,70 +29,80 @@ header{
   gap: 10px;
   border-bottom: 1px solid white;
   padding: 3px;
-  color: white;
+  color: #909090;
 }
-#logo{
+
+#logo {
   width: 4em;
 }
-img{
+
+.submit {
+  width: 100%;
+  margin-top: 40px;
+  background: linear-gradient(160deg, #855BC5, #1d12b3);
+  border: none;
+  border-radius: 20px;
+}
+
+img {
   width: 100%;
 }
-span{
+
+span {
   font-size: 2em;
 }
 
+.fields,
+input::placeholder {
+  background-color: transparent;
+  color: rgb(255, 255, 255);
+  width: 100%;
+  height: 4em;
+  display: block;
+  border-bottom: 1px solid rgba(196, 196, 196, 0.384);
+  margin-bottom: 10px;
+}
 
-.fields{
-  height: 40px;
-  width: 10em;
-  box-shadow: none;
-  border: none;
-  background-color:  #0e0d0d;
-  border-radius: 25px;
-  /*border-bottom: 2px solid rgb(82, 78, 78);*/
-  transition: 300ms;
-  color: white;
+input:focus,
+select:focus {
+  box-shadow: 0 0 0 0;
+  border: 0 none;
+  outline: none;
 }
-.fields:focus{
-  transition: 300ms;
-  box-shadow: none;
-  outline: 0;
-}
-.fieldsLarge{
-  width: 20em;
-}
-button{
+
+button {
   height: 40px;
   width: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
-#form{
-  display: flex;
-  gap: 10px;
-  flex-wrap: wrap;
+form {
+  display: block;
 }
 
 /*navegation*/
-#navegation{
-  width: 25%;
-  height: 88.5vh;
-  background-color: #181818;
-  border-right: 1px solid white;
+#navegation {
+  height: 100vh;
   display: flex;
   justify-content: start;
   align-items: center;
   flex-direction: column;
   flex-wrap: wrap;
 }
-.icon{
+
+.icon {
   width: 45px;
 }
-.profile{
+
+.profile {
   width: 7em;
   height: 7em;
 }
-a{
-  padding: 4px 4px 4px 15px ;
+
+a {
+  padding: 4px 4px 4px 15px;
   width: 100%;
   display: flex;
   height: 3em;
@@ -91,93 +110,143 @@ a{
   align-items: center;
   font-weight: 500;
   font-size: large;
-  margin-bottom: 30px;
+  margin-top: 30px;
   text-decoration: none;
   transition: 300ms;
-  color: #11a5ff; 
+  color: #11a5ff;
 }
-a:hover{
+
+a:hover {
   background-color: aqua;
   transition: 300ms;
   border-left: 3px solid transparent;
   border-radius: 30px;
 }
 
-.add{
-  /*background-color: green;*/
-  width: 7em;
-  height: 40%;
+.add {
+  width: 250px;
+  max-width: 250px;
+  height: 256px;
   display: flex;
   justify-content: center;
   align-items: center;
   flex-wrap: wrap;
-  
+  border-bottom: 1px solid white;
 }
-.add_button{
-  background: linear-gradient(147deg, rgb(156,106,219) 0%, rgb(49,38,228) 100%);
-  width: 100%;
+
+.add_button {
+  background: linear-gradient(147deg, rgb(156, 106, 219) 0%, rgb(49, 38, 228) 100%);
+  width: 60%;
   border: none;
   border-radius: 10px;
 }
-.add_button:hover{
+
+.add_button:hover {
   cursor: pointer;
 }
+
 /*main*/
-#content{
+#select_month {
+  margin: 10px 0;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+#monthTransactions,
+.search_fields,
+#research,
+#reset {
+  color: white;
+  width: 15%;
+  height: 30px;
+  border-radius: 20px;
+  text-align: center;
+  background-color: #020b1a69;
+}
+
+#research,
+#reset {
+  background-color: #3d4a54;
+  width: 8%;
+}
+
+#search_transactions {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin: 20px 0;
+  justify-content: center;
+}
+
+#content {
   display: flex;
 }
-main{
+
+main {
   width: 100%;
+  height: 100%;
+  border-left: 1px solid white;
 }
-#values{
-  margin: 30px 0;
-  height: 18%;
+
+#values {
+  margin: 10px 0;
   display: flex;
   gap: 30px;
   justify-content: space-evenly;
+  flex-wrap: wrap;
 }
 
-.cards{
+.cards {
   width: 30%;
-  height: 100%;
+  height: 2em;
   border-radius: 25px;
-  background-color:  #0e0d0d;
+  background: linear-gradient(#324459, #161d27);
   box-shadow: 0px 1px 1px 0px rgba(0, 0, 0, 40%);
-  padding: 1rem;
+  padding: 50px 30px;
   display: flex;
   justify-content: space-between;
   align-items: center;
   color: white;
 }
 
-.icon_cards{
-  width: 65px;
+.icon_cards {
+  width: 4em;
 }
 
-#informations{
-  background-color: rgba(0,0,0, 42%);
-  display: flex;
+#graphics {
   width: 100%;
+  height: 100%;
+  display: flex;
   justify-content: center;
+  flex-wrap: wrap;
 }
 
-#informations > div{
-  width: 74%;
-  height: 61.7vh;
+.graphicsPerCategory {
+  width: 500px;
+  height: 244px;
+  margin: 7px 0;
+}
+
+#transactions_per_month {
+  width: 100%;
+  height: 350px;
 }
 
 /*table*/
-table{
+table {
   width: 100%;
   text-align: center;
   border-collapse: collapse;
   color: white;
 }
 
-td{
+td {
   border-top: 1px solid white;
 }
-.button_Remove{
+
+.button_Remove,
+.edit_register {
   background-color: rgb(180, 29, 29);
   border: none;
   border-radius: 10px;
@@ -188,20 +257,38 @@ td{
   color: white;
   cursor: pointer;
 }
-.edit_register{
-  background-color: rgb(13, 115, 13);
-  border: none;
-  border-radius: 10px;
-  width: 3em;
-  margin: 6px 0;
-  font-weight: 900;
-  font-size: 1.3em;
-  color: white;
-  cursor: pointer;
+
+.edit_register {
+  background-image: linear-gradient(330deg, #65a51f 0, #499c18 25%, #1c900d 50%, #008405 75%, #007b06 100%);
+}
+
+.edit_register>img {
+  width: 30px;
 }
 
 /*modal*/
-dialog{
+dialog {
   margin: auto;
-  width: 40%;
+  width: 45%;
+  height: 85%;
+  padding: 2%;
+  background-color: #192130f3;
+  color: white;
+  box-shadow: 0 8px 32px 0 rgba(14, 18, 71, 0.37);
+  backdrop-filter: blur(8px);
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+}
+
+dialog div {
+  display: flex;
+  justify-content: space-between;
+}
+
+.cancelButton {
+  background-color: transparent;
+  border: none;
+  font-size: 40px;
+  font-family: "trebuchet MS", Helvetica, sans-serif;
+  color: white;
 }

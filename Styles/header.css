@@ -1,4 +1,4 @@
-header{
+header {
   width: 100%;
   background-color: #181818;
   display: flex;
@@ -9,16 +9,20 @@ header{
   padding: 3px;
   color: white;
 }
-#logo{
+
+#logo {
   width: 4em;
 }
-img{
+
+img {
   width: 100%;
 }
-span{
+
+span {
   font-size: 2em;
 }
-#category{
+
+#category {
   display: flex;
   gap: 10px;
   align-items: center;
@@ -27,31 +31,34 @@ span{
   padding-right: 10px;
 }
 
-.fields{
+.fields {
   height: 40px;
   width: 10em;
   box-shadow: none;
   border: none;
-  background-color:  #0e0d0d;
+  background-color: #0e0d0d;
   border-radius: 25px;
   /*border-bottom: 2px solid rgb(82, 78, 78);*/
   transition: 300ms;
   color: white;
 }
-.fields:focus{
+
+.fields:focus {
   transition: 300ms;
   box-shadow: none;
   outline: 0;
 }
-.fieldsLarge{
+
+.fieldsLarge {
   width: 20em;
 }
-button{
+
+button {
   height: 40px;
   width: 40px;
 }
 
-#form{
+#form {
   display: flex;
   gap: 10px;
   flex-wrap: wrap;
