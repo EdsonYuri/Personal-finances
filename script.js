@@ -501,6 +501,62 @@ function filterTransactions() {
     transactionsTable.addCell()
   }
 }
+class UserInterface {
+  constructor() {
+    this.menu = document.getElementById('navegation')
+    this.modals = document.querySelector('dialog')
+    this.content = document.getElementById('content')
+    this.body = document.querySelector('body')
+    this.transactionSearchModal = document.getElementById('transaction_search_modal')
+    this.searchTransactionsForm = document.getElementById('search_transactions')
+    this.createNavigationEventListeners()
+    this.showHideMenu()
+  }
+
+  createNavigationEventListeners() {
+    document.querySelector('.open_navigation').addEventListener('click', () => {
+      if (this.menu.style.display == 'none') {
+        this.menu.style.width = '250px'
+        this.menu.style.display = 'flex'
+        this.body.style.overflowY = 'hidden'
+        this.content.style.overflow = 'hidden'
+      } else {
+        this.menu.style.width = 0
+        this.menu.style.display = 'none'
+        this.content.style.overflow = 'auto'
+        this.body.style.overflowY = 'auto'
+      }
+    })
+  }
+
+
+  showHideMenu() {
+    let displayModes = screen.availWidth < 800 ? 'mobile' : 'desktop'
+    switch (displayModes) {
+      case 'desktop':
+        this.menu.style.display = 'flex'
+        this.menu.style.width = '250px'
+        break;
+
+      default:
+        this.menu.style.display = 'none'
+        this.modals.style.width = '100%'
+        break;
+    }
+  }
+
+  openTransactionSearch() {
+    document.getElementById('open_search').addEventListener('click', () => {
+      this.transactionSearchModal.appendChild(this.searchTransactionsForm)
+      this.transactionSearchModal.showModal()
+      Array.from(this.searchTransactionsForm.children).forEach(child => {
+        child.className = "fields";
+      });
+      this.searchTransactionsForm.style.display = 'flex'
+    })
+  }
+}
+const userInterface = new UserInterface()
 
 /*function updateChart() {
   distributeValues.monthlyTransactions()

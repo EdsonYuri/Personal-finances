@@ -9,8 +9,7 @@
   <link rel="stylesheet" href="style.css">
 </head>
 
-<body>
-
+<body onresize="userInterface.showHideMenu()">
   <div id="content">
     <nav id="navegation">
       <div class="add">
@@ -44,7 +43,11 @@
       <a href="./pages/management.html"><img src="./Assets/manage finances.png" alt="" class="icon">Gerenciamento</a>
     </nav>
 
-    <main>
+    <figure class="open_navigation">
+      <img src="./Assets/menu.png" alt="">
+    </figure>
+
+    <main id="main">
       <div id="select_month">
         <input type="month" id="monthTransactions">
       </div>

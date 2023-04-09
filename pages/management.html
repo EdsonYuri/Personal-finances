@@ -9,7 +9,7 @@
   <link rel="stylesheet" href='../style.css'>
 </head>
 
-<body onload="loadTable()">
+<body onload="loadTable(), userInterface.openTransactionSearch()" onresize="userInterface.showHideMenu()">
   <div id="content">
     <nav id="navegation">
       <div class="add">
@@ -42,6 +42,10 @@
       <a href="../index.html"><img src="../Assets/home.png" alt="" class="icon">Dashboard</a>
       <a href="../pages/management.html"><img src="../Assets/manage finances.png" alt="" class="icon">Gerenciamento</a>
     </nav>
+
+    <figure class="open_navigation">
+      <img src="../Assets/menu.png" alt="">
+    </figure>
 
     <main>
       <div id="values">
@@ -79,7 +83,7 @@
         </div>
       </div>
 
-      <div>
+      <div id="teste">
         <form action="" id='search_transactions'>
           <select id="searchTypeCategory" onchange="determinesSubcategorys('searchTypeCategory', 'searchType')"
             class="search_fields">
@@ -98,6 +102,10 @@
           <input onClick="window.location.reload()" type="reset" id="reset">
         </form>
       </div>
+      <dialog id="transaction_search_modal">
+        <!--form of search transactions-->
+      </dialog>
+      <button id="open_search">Pesquisar</button>
       <div>
         <table>
           <thead>

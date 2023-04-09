@@ -22,12 +22,10 @@ body {
 /*header*/
 header {
   width: 100%;
-  background-color: #181818;
   display: flex;
   justify-content: start;
   align-items: center;
   gap: 10px;
-  border-bottom: 1px solid white;
   padding: 3px;
   color: #909090;
 }
@@ -49,7 +47,7 @@ img {
 }
 
 span {
-  font-size: 2em;
+  font-size: 1.9em;
 }
 
 .fields,
@@ -84,7 +82,7 @@ form {
 
 /*navegation*/
 #navegation {
-  height: 100vh;
+  height: 100%;
   display: flex;
   justify-content: start;
   align-items: center;
@@ -189,25 +187,34 @@ main {
   border-left: 1px solid white;
 }
 
-#values {
+/*#values {
   margin: 10px 0;
   display: flex;
   gap: 30px;
   justify-content: space-evenly;
   flex-wrap: wrap;
+}*/
+
+#values {
+  width: 100%;
+  margin: 10px 0;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  gap: 30px;
 }
 
 .cards {
-  width: 30%;
+  width: 20em;
   height: 2em;
   border-radius: 25px;
   background: linear-gradient(#324459, #161d27);
   box-shadow: 0px 1px 1px 0px rgba(0, 0, 0, 40%);
-  padding: 50px 30px;
   display: flex;
   justify-content: space-between;
   align-items: center;
   color: white;
+  padding: 50px 30px;
 }
 
 .icon_cards {
@@ -233,12 +240,37 @@ main {
   height: 350px;
 }
 
+.open_navigation {
+  position: absolute;
+  margin: 10px;
+  width: 30px;
+  display: none;
+}
+
+.open_navigation>img {
+  position: relative;
+  right: 2px;
+}
+
+#open_search {
+  background-color: #1B2839;
+  margin: 0 auto;
+  width: 55%;
+  border-radius: 40px;
+  font-size: larger;
+  font-weight: 300;
+  font-family: "trebuchet MS", Helvetica, sans-serif;
+  color: white;
+  display: none;
+}
+
 /*table*/
 table {
   width: 100%;
   text-align: center;
   border-collapse: collapse;
   color: white;
+  margin: 10px 0;
 }
 
 td {
@@ -291,4 +323,62 @@ dialog div {
   font-size: 40px;
   font-family: "trebuchet MS", Helvetica, sans-serif;
   color: white;
+}
+
+@media screen and (max-width: 800px) {
+  #values {
+    display: grid;
+    background-color: red;
+    grid-template-columns: auto auto auto;
+  }
+
+  .cards {
+    display: flex;
+    justify-content: center;
+    background: none;
+    box-shadow: none;
+    width: 100%;
+    height: 100%;
+    padding: 0;
+    text-align: center;
+  }
+
+  .cards>figure {
+    display: none;
+  }
+
+  .cards:first-child {
+    grid-column-start: 1;
+    grid-column-end: 4;
+  }
+
+  .cards:last-child {
+    grid-column-start: 3
+  }
+
+  #monthTransactions {
+    color: white;
+    width: 50%;
+    display: flex;
+    text-align: center;
+  }
+
+  #navegation {
+    background-color: #212F3F;
+    /*position: fixed;*/
+    height: 100vh;
+    display: none;
+  }
+
+  .open_navigation {
+    display: block;
+  }
+
+  #search_transactions {
+    display: none;
+  }
+
+  #open_search {
+    display: flex;
+  }
 }
