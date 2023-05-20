@@ -15,7 +15,6 @@ button:hover,
 }
 
 body {
-  background: rgb(51, 69, 90);
   background: linear-gradient(160deg, rgba(51, 69, 90, 1) 0%, rgb(6, 11, 19) 100%);
 }
 
@@ -63,9 +62,11 @@ input::placeholder {
 
 input:focus,
 select:focus {
+  color: rgb(255, 255, 255);
   box-shadow: 0 0 0 0;
   border: 0 none;
   outline: none;
+  border-bottom: 1px solid rgba(196, 196, 196, 0.384);
 }
 
 button {
@@ -82,12 +83,15 @@ form {
 
 /*navegation*/
 #navegation {
+  width: 20%;
+  max-width: 270px;
   height: 100%;
   display: flex;
   justify-content: start;
   align-items: center;
   flex-direction: column;
   flex-wrap: wrap;
+  z-index: 1;
 }
 
 .icon {
@@ -100,14 +104,14 @@ form {
 }
 
 a {
-  padding: 4px 4px 4px 15px;
+  padding: 4px;
   width: 100%;
   display: flex;
   height: 3em;
   gap: 10%;
   align-items: center;
   font-weight: 500;
-  font-size: large;
+  font-size: 18px;
   margin-top: 30px;
   text-decoration: none;
   transition: 300ms;
@@ -122,8 +126,7 @@ a:hover {
 }
 
 .add {
-  width: 250px;
-  max-width: 250px;
+  width: 100%;
   height: 256px;
   display: flex;
   justify-content: center;
@@ -182,18 +185,11 @@ a:hover {
 }
 
 main {
-  width: 100%;
+  width: 80%;
   height: 100%;
   border-left: 1px solid white;
+  min-height: 100vh;
 }
-
-/*#values {
-  margin: 10px 0;
-  display: flex;
-  gap: 30px;
-  justify-content: space-evenly;
-  flex-wrap: wrap;
-}*/
 
 #values {
   width: 100%;
@@ -204,21 +200,23 @@ main {
   gap: 30px;
 }
 
+
 .cards {
   width: 20em;
-  height: 2em;
+  height: 100%;
   border-radius: 25px;
   background: linear-gradient(#324459, #161d27);
   box-shadow: 0px 1px 1px 0px rgba(0, 0, 0, 40%);
   display: flex;
-  justify-content: space-between;
   align-items: center;
   color: white;
-  padding: 50px 30px;
+  padding: 20px 30px;
+  justify-content: space-between;
 }
 
 .icon_cards {
   width: 4em;
+  padding-left: 5px;
 }
 
 #graphics {
@@ -245,6 +243,7 @@ main {
   margin: 10px;
   width: 30px;
   display: none;
+  z-index: 2;
 }
 
 .open_navigation>img {
@@ -264,6 +263,13 @@ main {
   display: none;
 }
 
+
+#table,
+.cards {
+  max-width: 100%;
+  overflow: auto;
+}
+
 /*table*/
 table {
   width: 100%;
@@ -275,6 +281,18 @@ table {
 
 td {
   border-top: 1px solid white;
+  height: 53px;
+  padding: 6px;
+}
+
+th {
+  height: 30px;
+}
+
+.buttons {
+  display: flex;
+  position: relative;
+  justify-content: space-evenly;
 }
 
 .button_Remove,
@@ -283,7 +301,6 @@ td {
   border: none;
   border-radius: 10px;
   width: 3em;
-  margin: 6px 0;
   font-weight: 900;
   font-size: 1.3em;
   color: white;
@@ -325,22 +342,23 @@ dialog div {
   color: white;
 }
 
-@media screen and (max-width: 800px) {
+@media screen and (max-width: 900px) {
   #values {
+    border-bottom: 1px solid rgba(196, 196, 196, 0.384);
     display: grid;
-    background-color: red;
     grid-template-columns: auto auto auto;
+    margin-bottom: 20px;
+    padding-bottom: 20px;
   }
 
   .cards {
     display: flex;
-    justify-content: center;
     background: none;
     box-shadow: none;
     width: 100%;
     height: 100%;
     padding: 0;
-    text-align: center;
+    border-radius: 0;
   }
 
   .cards>figure {
@@ -350,22 +368,24 @@ dialog div {
   .cards:first-child {
     grid-column-start: 1;
     grid-column-end: 4;
+    
   }
 
   .cards:last-child {
     grid-column-start: 3
   }
 
+
   #monthTransactions {
     color: white;
     width: 50%;
     display: flex;
     text-align: center;
+    justify-content: center;
   }
 
   #navegation {
     background-color: #212F3F;
-    /*position: fixed;*/
     height: 100vh;
     display: none;
   }
@@ -374,11 +394,33 @@ dialog div {
     display: block;
   }
 
+  .add{
+    width: 250px;
+  }
+
   #search_transactions {
     display: none;
   }
 
   #open_search {
     display: flex;
+  }
+
+  dialog {
+    width: 100%;
+  }
+
+  main{
+    width: 100%;
+  }
+
+  .buttons {
+    display: none;
+  }
+
+  #research,
+  #reset {
+    background-color: #3d4a54;
+    width: 30%;
   }
 }

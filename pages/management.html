@@ -9,7 +9,7 @@
   <link rel="stylesheet" href='../style.css'>
 </head>
 
-<body onload="loadTable(), userInterface.openTransactionSearch()" onresize="userInterface.showHideMenu()">
+<body onload="loadTable(), userInterface.openTransactionSearch()" onresize="userInterface.changeView()">
   <div id="content">
     <nav id="navegation">
       <div class="add">
@@ -47,12 +47,12 @@
       <img src="../Assets/menu.png" alt="">
     </figure>
 
-    <main>
+    <main id="main_of_management">
       <div id="values">
         <div class="cards">
           <div>
             <p>Saldo disponivel</p> <br>
-            <span id="balanceValue">0</span>
+            <span id="balanceValue">R$ 0,00</span>
           </div>
 
           <figure class="icon_cards">
@@ -63,7 +63,7 @@
         <div class="cards">
           <div>
             <p>Despesas</p> <br>
-            <span id="expenseValue">0</span>
+            <span id="expenseValue">R$ 0,00</span>
           </div>
 
           <figure class="icon_cards">
@@ -74,7 +74,7 @@
         <div class="cards">
           <div>
             <p>Receitas</p> <br>
-            <span id="revenuesValue">0</span>
+            <span id="revenuesValue">R$ 0,00</span>
           </div>
 
           <figure class="icon_cards">
@@ -83,7 +83,7 @@
         </div>
       </div>
 
-      <div id="teste">
+      <div>
         <form action="" id='search_transactions'>
           <select id="searchTypeCategory" onchange="determinesSubcategorys('searchTypeCategory', 'searchType')"
             class="search_fields">
@@ -103,10 +103,14 @@
         </form>
       </div>
       <dialog id="transaction_search_modal">
+        <div>
+          <span>Pesquisar transações</span>
+          <button id="close_transaction_search_modal" class="cancelButton">x</button>
+        </div>
         <!--form of search transactions-->
       </dialog>
       <button id="open_search">Pesquisar</button>
-      <div>
+      <div id="table">
         <table>
           <thead>
             <th>Categoria</th>

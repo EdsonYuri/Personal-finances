@@ -1,4 +1,4 @@
-
+const displayModes = screen.availWidth < 800 ? 'mobile' : 'desktop'
 let infoInput = {}
 class InfoInput {
   constructor(category, type, date, value, description) {
@@ -80,7 +80,7 @@ function determinesSubcategorys(Category, Type) {
   }
 
   const revenuesSubcategory = {
-    '': '',
+    'Selecione um tipo de Receita': '',
     Salario: 'Salario',
     Juros: 'Juros',
     Dividendos: 'Dividendos',
@@ -138,6 +138,7 @@ class DataManager {
     this.expenseByCategory = []
     this.revenuesByCategory = []
   }
+  static yearFiltered = new Date().getFullYear()
   retriveRecord() {
     if (this.recoveredRegister.length === 0) {
       for (let i = 0; i <= this.id; i++) {
@@ -166,15 +167,17 @@ class DataManager {
   determineTransactionPerMonths() {
     let sumExpenses = 0
     let sum = 0
-
     function transactionsPerMonth(category, transactions, register) {
       sumExpenses = 0
       for (let i = 1; i <= 12; i++) {
         let monthTraveled = ''
+        let year = new Date().getFullYear()
         i <= 9 ? monthTraveled = `0${i}` : monthTraveled = `${i}`
         register.filter(filtered => {
           transactions[0] = sum
-          if (filtered.date.slice(5, 7) === monthTraveled && filtered.category === category) {
+          if (filtered.date.slice(5, 7) === monthTraveled
+            && filtered.category === category
+            && filtered.date.slice(0, 4) == DataManager.yearFiltered) {
             sum = sumExpenses += Number(filtered.value)
           }
         })
@@ -257,7 +260,9 @@ class DataManager {
     function listByCategory(category, values, ListByCategory) {
       for (let i in ListByCategory) {
         records.filter(e => {
-          if (e.type == ListByCategory[i][0] && e.category == category) {
+          if (e.type == ListByCategory[i][0]
+            && e.category == category
+            && e.date.slice(0, 4) == DataManager.yearFiltered) { 
             ListByCategory[i][1] += Number(e.value)
           }
         })
@@ -320,8 +325,11 @@ class DistributeValues extends DataManager {
     this.revenuesPerDay = []
     this.daysOfTransaction = []
     let monthSelected = Number(document.getElementById('monthTransactions').value.slice(5))
+    let yearSelected = Number(document.getElementById('monthTransactions').value.slice(0, 4))
     this.transactionsPerMonth = this.recoveredRegister.filter(e => {
-      if (e.date.slice(5, 7) == monthSelected) {
+      if (e.date.slice(5, 7) == monthSelected
+        && e.date.slice(0, 4) == yearSelected) {
+        DataManager.yearFiltered = yearSelected
         return e
       }
     })
@@ -389,6 +397,7 @@ class TransactionsTable {
   addCell() {
     this.tableBody = document.getElementById('tableBody')
     this.row = tableBody.insertRow()
+    this.row.id = this.id
 
     let date = {
       day: this.date.slice(8),
@@ -445,12 +454,16 @@ class TransactionsTable {
           document.getElementById('editValue'),
           document.getElementById('editDescription')
         )
-        dataManager.editRegister(registryChanges, edit_register.id)
+        if (registryChanges.type === '' && registryChanges.category !== '') {
+          alert("Selecione um tipo da categoria escolhida")
+        } else {
+          dataManager.editRegister(registryChanges, edit_register.id)
+        }
+
       }
 
     }
-    this.row.insertCell(5).appendChild(edit_register)
-
+    let buttons = this.row.insertCell(5)
     let remove_button = document.createElement('button')
     remove_button.innerText = 'X'
     remove_button.className = 'button_Remove'
@@ -459,8 +472,12 @@ class TransactionsTable {
       localStorage.removeItem(`chave${remove_button.id}`)
       window.location.reload()
     }
-    this.row.insertCell(6).appendChild(remove_button)
+    buttons.className = 'buttons'
+
+    buttons.appendChild(edit_register)
+    buttons.appendChild(remove_button)
   }
+
 }
 function loadTable(listTransactions = dataManager.recoveredRegister) {
   for (let i in listTransactions) {
@@ -500,52 +517,92 @@ function filterTransactions() {
     )
     transactionsTable.addCell()
   }
+  userInterface.interactiveButtons()
 }
-class UserInterface {
+class UserInterface extends TransactionsTable {
   constructor() {
+    super()
     this.menu = document.getElementById('navegation')
     this.modals = document.querySelector('dialog')
     this.content = document.getElementById('content')
     this.body = document.querySelector('body')
     this.transactionSearchModal = document.getElementById('transaction_search_modal')
     this.searchTransactionsForm = document.getElementById('search_transactions')
+    this.cards = document.querySelector('.cards')
     this.createNavigationEventListeners()
-    this.showHideMenu()
-  }
 
+  }
   createNavigationEventListeners() {
     document.querySelector('.open_navigation').addEventListener('click', () => {
-      if (this.menu.style.display == 'none') {
-        this.menu.style.width = '250px'
-        this.menu.style.display = 'flex'
-        this.body.style.overflowY = 'hidden'
-        this.content.style.overflow = 'hidden'
-      } else {
-        this.menu.style.width = 0
-        this.menu.style.display = 'none'
-        this.content.style.overflow = 'auto'
-        this.body.style.overflowY = 'auto'
+
+      switch (this.menu.style.display) {
+        case 'flex':
+          this.menu.style.width = 0
+          this.menu.style.display = 'none'
+          this.content.style.overflow = 'auto'
+          this.body.style.overflowY = 'auto'
+          break;
+        default:
+          this.menu.style.width = '250px'
+          this.menu.style.display = 'flex'
+          this.body.style.overflowY = 'hidden'
+          this.content.style.overflow = 'hidden'
+          break;
       }
     })
   }
 
+  controlsGridElements() {
+    let values = [document.getElementById("balanceValue").innerText,
+    document.getElementById("revenuesValue").innerText,
+    document.getElementById("expenseValue").innerText
+    ]
+    let confimation = undefined
 
-  showHideMenu() {
-    let displayModes = screen.availWidth < 800 ? 'mobile' : 'desktop'
-    switch (displayModes) {
-      case 'desktop':
-        this.menu.style.display = 'flex'
-        this.menu.style.width = '250px'
-        break;
+    for (let i in values) {
+      if (values[i].length >= 30) {
+        confimation = true
+      }
+    }
+    if (confimation === true) {
+      this.cards.style.justifyContent = 'start'
+      this.cards.style.textAlign = 'start'
+      document.querySelector('#main_of_management').style.marginTop = '50px'
+    } else {
+      this.cards.style.justifyContent = 'center'
+      this.cards.style.textAlign = 'center'
+    }
+  }
 
-      default:
-        this.menu.style.display = 'none'
-        this.modals.style.width = '100%'
-        break;
+  interactiveButtons() {
+    const tableRows = document.querySelectorAll('tbody tr')
+
+    if (screen.availWidth < 900) {
+      for (let i = 0; i < tableRows.length; i++) {
+        tableRows[i].addEventListener('click', () => {
+          const buttons = tableRows[i].lastChild
+
+          switch (buttons.style.display) {
+            case 'flex':
+              buttons.style.display = 'none'
+              tableRows[i].style.background = 'none'
+              break;
+            default:
+              tableRows[i].style.background = 'linear-gradient(90deg, rgba(36,40,41,0.09987745098039214) 0%, rgba(35,36,46,1) 100%)'
+              buttons.style.display = 'flex'
+              buttons.style.position = 'absolute'
+              buttons.style.right = '10px'
+              break;
+          }
+        })
+      }
+      this.controlsGridElements()
     }
   }
 
   openTransactionSearch() {
+    let research = document.getElementById('research')
+    let cancel = document.getElementById('close_transaction_search_modal')
     document.getElementById('open_search').addEventListener('click', () => {
       this.transactionSearchModal.appendChild(this.searchTransactionsForm)
       this.transactionSearchModal.showModal()
@@ -554,21 +611,25 @@ class UserInterface {
       });
       this.searchTransactionsForm.style.display = 'flex'
     })
+    cancel.onclick = () => {
+      this.transactionSearchModal.close()
+    }
+    research.addEventListener('click', (e) => {
+      e.preventDefault()
+      this.transactionSearchModal.close()
+    })
+    this.interactiveButtons()
+  }
+
+  changeView() {
+    let momentaryDisplay = screen.availWidth < 800 ? 'mobile' : 'desktop'
+    if (momentaryDisplay !== displayModes) {
+      window.location.reload()
+    }
   }
 }
 const userInterface = new UserInterface()
 
-/*function updateChart() {
-  distributeValues.monthlyTransactions()
-  dataManager.expenseListByCategory(distributeValues.transactionsPerMonth)
-
-  expenseByCategory.data.datasets[0].data = dataManager.expenseByCategory
-  revenuesByCategory.data.datasets[0].data = dataManager.revenuesByCategory
-  expenseByCategory.update()
-  revenuesByCategory.update()
-}*/
-
-// Graphics
 class Graphics extends DistributeValues {
   constructor() {
     super()
@@ -584,7 +645,7 @@ class Graphics extends DistributeValues {
       data: {
         labels: ['Educação', 'Alimentação', 'Lazer', 'Serviço', 'Restaurante', 'Saúde', 'Transporte', 'Casa', 'Super Mercado', 'Outro'],
         datasets: [{
-          label: '# of Votes',
+          label: 'Valor em dinheiro',
           data: dataManager.expenseByCategory,
           borderWidth: 1
         }]
@@ -665,7 +726,7 @@ class Graphics extends DistributeValues {
       data: {
         labels: ['Salario', 'Juros', 'Dividendos', 'Benefícios', 'Freelancer', 'Venda', 'Bonificação', 'Bônus', 'Ganhos', 'Outro'],
         datasets: [{
-          label: '# of Votes',
+          label: 'Valor em dinheiro',
           data: dataManager.revenuesByCategory,
           borderWidth: 1
         }]
