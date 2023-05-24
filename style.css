@@ -92,13 +92,15 @@ label{
 #navegation {
   width: 20%;
   max-width: 270px;
-  height: 100%;
   display: flex;
   justify-content: start;
   align-items: center;
   flex-direction: column;
   flex-wrap: wrap;
   z-index: 1;
+  border-right: 1px solid white;
+  background-color: #243142;
+  flex-grow: 1;
 }
 
 .icon {
@@ -183,7 +185,6 @@ a:hover {
   display: flex;
   gap: 10px;
   flex-wrap: wrap;
-  margin: 20px 0;
   justify-content: center;
 }
 
@@ -196,12 +197,9 @@ main {
   height: 100%;
   border-left: 1px solid white;
   min-height: 100vh;
+  margin-left: -1px;
 }
 
-#transaction_search_modal > label{
-  position: relative;
-  top: 25px;
-}
 
 #values {
   width: 100%;
@@ -214,16 +212,16 @@ main {
 
 
 .cards {
+  display: flex;
+  justify-content: space-between;
   width: 20em;
   height: 100%;
   border-radius: 25px;
   background: linear-gradient(#324459, #161d27);
   box-shadow: 0px 1px 1px 0px rgba(0, 0, 0, 40%);
-  display: flex;
   align-items: center;
   color: white;
   padding: 20px 30px;
-  justify-content: space-between;
 }
 
 .icon_cards {
@@ -305,6 +303,7 @@ td {
 
 th {
   height: 30px;
+  padding: 0 10px;
 }
 
 .buttons {
@@ -367,6 +366,7 @@ dialog div {
     grid-template-columns: auto auto auto;
     margin-bottom: 20px;
     padding-bottom: 20px;
+    padding: 0 10px;
   }
 
   .cards {

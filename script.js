@@ -265,7 +265,7 @@ class DataManager {
         records.filter(e => {
           if (e.type == ListByCategory[i][0]
             && e.category == category
-            && e.date.slice(0, 4) == DataManager.yearFiltered) { 
+            && e.date.slice(0, 4) == DataManager.yearFiltered) {
             ListByCategory[i][1] += Number(e.value)
           }
         })
@@ -555,18 +555,18 @@ class UserInterface extends TransactionsTable {
     document.getElementById("revenuesValue").innerText,
     document.getElementById("expenseValue").innerText
     ]
-    let confimation = undefined
+    let manyCharacters = undefined
 
     for (let i in values) {
       if (values[i].length >= 30) {
-        confimation = true
+        manyCharacters = true
       }
     }
-    if (confimation === true) {
+    if (manyCharacters === true && displayModes === 'mobile') {
       this.cards.style.justifyContent = 'start'
       this.cards.style.textAlign = 'start'
-      document.querySelector('#main_of_management').style.marginTop = '50px'
-    } else {
+      document.querySelector('#main_of_management').style.paddingTop = '39px'
+    } else if (manyCharacters !== true && displayModes === 'mobile') {
       this.cards.style.justifyContent = 'center'
       this.cards.style.textAlign = 'center'
     }
@@ -645,6 +645,18 @@ class Graphics extends DistributeValues {
         datasets: [{
           label: 'Valor em dinheiro',
           data: dataManager.expenseByCategory,
+          backgroundColor: [
+            'rgb(255, 99, 132',  
+            'rgb(255, 205, 86',   
+            'rgb(54, 162, 235',   
+            'rgb(255, 159, 64)',   
+            'rgb(153, 102, 255)',  
+            'rgb(255, 99, 255)',   
+            'rgb(75, 192, 192)',  
+            'rgb(201, 203, 207)',  
+            'rgb(255, 204, 92)',   
+            'rgb(0, 204, 153)'     
+          ],
           borderWidth: 1
         }]
       },
@@ -725,8 +737,20 @@ class Graphics extends DistributeValues {
         labels: ['Salario', 'Juros', 'Dividendos', 'Benefícios', 'Freelancer', 'Venda', 'Bonificação', 'Bônus', 'Ganhos', 'Outro'],
         datasets: [{
           label: 'Valor em dinheiro',
+          backgroundColor: [
+            'rgb(191, 63, 127)',   
+            'rgb(127, 191, 63)',   
+            'rgb(63, 127, 191)',   
+            'rgb(191, 127, 63)',   
+            'rgb(127, 191, 191)',  
+            'rgb(255, 102, 102)',  
+            'rgb(204, 102, 255)',  
+            'rgb(255, 153, 51)',   
+            'rga(255, 204, 0)',    
+            'rgb(0, 153, 153)'     
+          ],
           data: dataManager.revenuesByCategory,
-          borderWidth: 1
+          borderWidth: 1,
         }]
       },
       options: {
