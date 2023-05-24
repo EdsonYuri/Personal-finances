@@ -22,20 +22,23 @@
           <button class="cancelButton">x</button>
         </div>
 
-        <form action="" id="form"><br>
+        <form action=""><br>
+          <fieldset>
+            <label for="editDate">Data</label>
+            <input type="date" id="date" class="fields">
+          </fieldset>
           <select id="typeCategory" onchange="determinesSubcategorys('typeCategory', 'type')" class="fields">
             <option value="" disabled selected>Categoria</option>
             <option value="1">Despesa</option>
             <option value="2">Receitas</option>
           </select>
-          <input type="date" id="date" class="fields">
 
           <select name="" id="type" class="fields">
             <option value="" disabled selected>Selecione uma categoria</option>
           </select>
 
           <input type="number" placeholder="Valor" id="value" class="fields">
-          <input type="text" placeholder="Descrição" id="description" class="fields">
+          <input type="text" placeholder="Descrição" id="description" class="fields" autocomplete="off">
           <button class="submit">Adicionar</button>
         </form>
       </dialog>
@@ -85,21 +88,26 @@
 
       <div>
         <form action="" id='search_transactions'>
+          <input type="date" id="searchDate" class="search_fields">
           <select id="searchTypeCategory" onchange="determinesSubcategorys('searchTypeCategory', 'searchType')"
             class="search_fields">
             <option value="" disabled selected>Categoria</option>
             <option value="1">Despesa</option>
             <option value="2">Receitas</option>
           </select>
-          <input type="date" id="searchDate" class="search_fields">
+
           <select name="" id="searchType" class="search_fields">
             <option value="" disabled selected>Selecione uma categoria</option>
           </select>
 
           <input type="number" placeholder="Valor" id="searchValue" class="search_fields">
-          <input type="text" placeholder="Descrição" id="searchDescription" class="search_fields">
-          <button onclick="filterTransactions()" id="research">+</button>
-          <input onClick="window.location.reload()" type="reset" id="reset">
+          <input type="text" placeholder="Descrição" id="searchDescription" class="search_fields" autocomplete="off">
+          <button onclick="filterTransactions()" id="research">
+            <img src="/Assets/search.png" alt="" style="width: 16px">
+          </button>
+          <button onClick="window.location.reload()" id="reset">
+            <img src="/Assets/reset.png" alt="" style="width: 16px">
+          </button>
         </form>
       </div>
       <dialog id="transaction_search_modal">
@@ -107,9 +115,17 @@
           <span>Pesquisar transações</span>
           <button id="close_transaction_search_modal" class="cancelButton">x</button>
         </div>
+        <label for="searchDate">Data</label>
         <!--form of search transactions-->
       </dialog>
-      <button id="open_search">Pesquisar</button>
+      <div id="search_button_box">
+        <button id="open_search" class="search_buttons">Pesquisar &nbsp
+          <img src="/Assets/search.png" alt="" style="width: 20px">
+        </button>
+        <button onClick="window.location.reload()" class="search_buttons">Redefinir &nbsp
+          <img src="/Assets/reset.png" alt="" style="width: 20px">
+        </button>
+      </div>
       <div id="table">
         <table>
           <thead>
@@ -132,18 +148,21 @@
       <span>Editar registro</span>
       <button id='cancel_button' class="cancelButton">x</button>
     </div>
-    <form action="" id="editForm">
+    <form action="">
+      <fieldset>
+        <label for="editDate">Data</label>
+        <input type="date" id="editDate" class="fields">
+      </fieldset>
       <select id="editCategory" class="fields" onchange="determinesSubcategorys('editCategory', 'editType')">
         <option value="" disabled selected>Categoria</option>
         <option value="1">Despesa</option>
         <option value="2">Receitas</option>
       </select>
-      <input type="date" id="editDate" class="fields">
       <select name="" id="editType" class="fields">
         <option value="" disabled selected>Tipo</option>
       </select>
       <input type="number" placeholder="Valor" id="editValue" class="fields">
-      <input type="text" placeholder="Descrição" id="editDescription" class="fields">
+      <input type="text" placeholder="Descrição" id="editDescription" class="fields" autocomplete="off">
       <button id="confirmButton" class="submit">Confirmar</button>
     </form>
   </dialog>

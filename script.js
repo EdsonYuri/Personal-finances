@@ -1,4 +1,7 @@
-const displayModes = screen.availWidth < 800 ? 'mobile' : 'desktop'
+const displayModes = screen.availWidth < 960 ? 'mobile' : 'desktop'
+
+
+
 let infoInput = {}
 class InfoInput {
   constructor(category, type, date, value, description) {
@@ -436,13 +439,9 @@ class TransactionsTable {
     }
     edit_register.onclick = () => {
       const modal = document.getElementById('editRecord')
-      const editForm = document.getElementById('editForm')
       const cancelButton = document.getElementById('cancel_button')
       const confirmButton = document.getElementById('confirmButton')
       modal.showModal()
-      editForm.addEventListener('click', e => {
-        e.preventDefault()
-      })
       cancelButton.onclick = () => {
         modal.close()
       }
@@ -545,8 +544,7 @@ class UserInterface extends TransactionsTable {
         default:
           this.menu.style.width = '250px'
           this.menu.style.display = 'flex'
-          this.body.style.overflowY = 'hidden'
-          this.content.style.overflow = 'hidden'
+          this.content.style.overflowX = 'hidden'
           break;
       }
     })
@@ -588,7 +586,7 @@ class UserInterface extends TransactionsTable {
               tableRows[i].style.background = 'none'
               break;
             default:
-              tableRows[i].style.background = 'linear-gradient(90deg, rgba(36,40,41,0.09987745098039214) 0%, rgba(35,36,46,1) 100%)'
+              tableRows[i].style.background = 'linear-gradient(90deg, rgba(36,40,41,0.09987745098039214) 0%, #33455a 100%)'
               buttons.style.display = 'flex'
               buttons.style.position = 'absolute'
               buttons.style.right = '10px'
@@ -622,7 +620,7 @@ class UserInterface extends TransactionsTable {
   }
 
   changeView() {
-    let momentaryDisplay = screen.availWidth < 800 ? 'mobile' : 'desktop'
+    let momentaryDisplay = screen.availWidth < 960 ? 'mobile' : 'desktop'
     if (momentaryDisplay !== displayModes) {
       window.location.reload()
     }

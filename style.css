@@ -47,17 +47,19 @@ img {
 
 span {
   font-size: 1.9em;
+  margin-bottom: 25px;
 }
 
 .fields,
 input::placeholder {
-  background-color: transparent;
+  background-color: rgb(26,33,49);
   color: rgb(255, 255, 255);
   width: 100%;
-  height: 4em;
-  display: block;
+  height: 50px;
+  display: flex;
   border-bottom: 1px solid rgba(196, 196, 196, 0.384);
   margin-bottom: 10px;
+  align-items: 'center'
 }
 
 input:focus,
@@ -75,10 +77,15 @@ button {
   display: flex;
   justify-content: center;
   align-items: center;
+  color: white;
 }
 
 form {
   display: block;
+}
+
+label{
+  font-size: 15px;
 }
 
 /*navegation*/
@@ -119,7 +126,7 @@ a {
 }
 
 a:hover {
-  background-color: aqua;
+  background-color: #36566b;
   transition: 300ms;
   border-left: 3px solid transparent;
   border-radius: 30px;
@@ -163,7 +170,7 @@ a:hover {
   height: 30px;
   border-radius: 20px;
   text-align: center;
-  background-color: #020b1a69;
+  background-color: rgb(26,33,49);
 }
 
 #research,
@@ -189,6 +196,11 @@ main {
   height: 100%;
   border-left: 1px solid white;
   min-height: 100vh;
+}
+
+#transaction_search_modal > label{
+  position: relative;
+  top: 25px;
 }
 
 #values {
@@ -251,18 +263,24 @@ main {
   right: 2px;
 }
 
-#open_search {
+.search_buttons {
   background-color: #1B2839;
   margin: 0 auto;
-  width: 55%;
+  width: 40%;
   border-radius: 40px;
   font-size: larger;
   font-weight: 300;
   font-family: "trebuchet MS", Helvetica, sans-serif;
   color: white;
   display: none;
+  display: flex;
+  text-align: center;
 }
 
+#search_button_box{
+  display: none;
+  justify-content: space-between;
+}
 
 #table,
 .cards {
@@ -342,7 +360,7 @@ dialog div {
   color: white;
 }
 
-@media screen and (max-width: 900px) {
+@media screen and (max-width: 960px) {
   #values {
     border-bottom: 1px solid rgba(196, 196, 196, 0.384);
     display: grid;
@@ -371,6 +389,10 @@ dialog div {
     
   }
 
+  #search_button_box{
+    display: flex;
+  }
+
   .cards:last-child {
     grid-column-start: 3
   }
@@ -384,9 +406,8 @@ dialog div {
     justify-content: center;
   }
 
-  #navegation {
-    background-color: #212F3F;
-    height: 100vh;
+  #navegation,
+  #reset {
     display: none;
   }
 
@@ -402,25 +423,33 @@ dialog div {
     display: none;
   }
 
-  #open_search {
-    display: flex;
-  }
-
   dialog {
     width: 100%;
   }
 
   main{
-    width: 100%;
+    width: 100vw;
   }
 
   .buttons {
     display: none;
   }
 
-  #research,
-  #reset {
+  #research{
     background-color: #3d4a54;
-    width: 30%;
+    width: 100%;
+    margin-top: 40px;
+    background: linear-gradient(160deg, #855BC5, #1d12b3);
+    border: none;
+    border-radius: 20px;
+    height: 40px;
+  }
+}
+
+@media only screen and (orientation:portrait){
+  .graphicsPerCategory{
+    width: 100%;
+    height: 244px;
+    margin: 7px 0;
   }
 }

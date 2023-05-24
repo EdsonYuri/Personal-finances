@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="pt-br">
- 
+
 <head>
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -22,21 +22,22 @@
           <button class="cancelButton">x</button>
         </div>
 
-        <form action="" id="form"><br>
+        <form action=""><br>
+          <fieldset>
+            <label for="editDate">Data</label>
+            <input type="date" id="date" class="fields">
+          </fieldset>
           <select id="typeCategory" onchange="determinesSubcategorys('typeCategory', 'type')" class="fields">
             <option value="" disabled selected>Categoria</option>
             <option value="1">Despesa</option>
             <option value="2">Receitas</option>
           </select>
-          
-            <input type="date" id="date" class="fields">
-
           <select name="" id="type" class="fields">
             <option value="" disabled selected>Selecione uma categoria</option>
           </select>
 
-          <input type="number" placeholder="Valor" id="value" class="fields">
-          <input type="text" placeholder="Descrição" id="description" class="fields">
+          <input type="number" placeholder="Valor" id="value" class="fields" min="0">
+          <input type="text" placeholder="Descrição" id="description" class="fields" autocomplete="off">
           <button class="submit">Adicionar</button>
         </form>
       </dialog>
