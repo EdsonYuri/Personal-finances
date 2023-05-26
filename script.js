@@ -1,7 +1,5 @@
 const displayModes = screen.availWidth < 960 ? 'mobile' : 'desktop'
 
-
-
 let infoInput = {}
 class InfoInput {
   constructor(category, type, date, value, description) {
@@ -84,7 +82,7 @@ function determinesSubcategorys(Category, Type) {
 
   const revenuesSubcategory = {
     'Selecione um tipo de Receita': '',
-    Salario: 'Salario',
+    Salário: 'Salário',
     Juros: 'Juros',
     Dividendos: 'Dividendos',
     Benefícios: 'Benefícios',
@@ -248,7 +246,7 @@ class DataManager {
       ['Outro', 0],
     ]
     let listRevenuesByCategory = [
-      ['Salario', 0],
+      ['Salário', 0],
       ['Juros', 0],
       ['Dividendos', 0],
       ['Benefícios', 0],
@@ -440,8 +438,12 @@ class TransactionsTable {
     edit_register.onclick = () => {
       const modal = document.getElementById('editRecord')
       const cancelButton = document.getElementById('cancel_button')
+      const editForm = document.getElementById('editForm')
       const confirmButton = document.getElementById('confirmButton')
       modal.showModal()
+      editForm.addEventListener('click', e => {
+        e.preventDefault()
+      })
       cancelButton.onclick = () => {
         modal.close()
       }
@@ -734,7 +736,7 @@ class Graphics extends DistributeValues {
     this.revenuesChart = new Chart(this.revenuesGraphic, {
       type: 'pie',
       data: {
-        labels: ['Salario', 'Juros', 'Dividendos', 'Benefícios', 'Freelancer', 'Venda', 'Bonificação', 'Bônus', 'Ganhos', 'Outro'],
+        labels: ['Salário', 'Juros', 'Dividendos', 'Benefícios', 'Freelancer', 'Venda', 'Bonificação', 'Bônus', 'Ganhos', 'Outro'],
         datasets: [{
           label: 'Valor em dinheiro',
           backgroundColor: [

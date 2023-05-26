@@ -148,18 +148,18 @@
       <span>Editar registro</span>
       <button id='cancel_button' class="cancelButton">x</button>
     </div>
-    <form action="">
-      <fieldset>
-        <label for="editDate">Data</label>
-        <input type="date" id="editDate" class="fields">
-      </fieldset>
+    <fieldset>
+      <label for="editDate">Data</label>
+      <input type="date" id="editDate" class="fields">
+    </fieldset>
+    <form action="" id="editForm">
       <select id="editCategory" class="fields" onchange="determinesSubcategorys('editCategory', 'editType')">
         <option value="" disabled selected>Categoria</option>
         <option value="1">Despesa</option>
         <option value="2">Receitas</option>
       </select>
       <select name="" id="editType" class="fields">
-        <option value="" disabled selected>Tipo</option>
+        <option value="" disabled selected>Selecione uma categoria</option>
       </select>
       <input type="number" placeholder="Valor" id="editValue" class="fields">
       <input type="text" placeholder="Descrição" id="editDescription" class="fields" autocomplete="off">
